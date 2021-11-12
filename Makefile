@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/12 11:41:21 by slathouw          #+#    #+#              #
-#    Updated: 2021/11/12 12:29:05 by slathouw         ###   ########.fr        #
+#    Updated: 2021/11/12 14:01:19 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 NAME 	= fdf
 INCLUDES= includes
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= 
 OBJDIR	= obj
 
 #PUSH_SWAP files 
