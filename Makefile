@@ -18,6 +18,7 @@ NAME 	= fdf
 INCLUDES= includes
 CC		= gcc
 CFLAGS	= 
+MLXFLAG = -lmlx -lXext -lX11
 OBJDIR	= obj
 
 #PUSH_SWAP files 
@@ -34,7 +35,7 @@ all : 		${NAME}
 
 #FDF linking compilation
 $(NAME) :	$(OBJS)
-	@${CC} ${CFLAGS} -I${INCLUDES}  ${OBJS} libs/libmlx.a libs/libmlx_Linux.a -L/usr/lib -lXext -lX11 -lm -lz -o ${NAME}
+	@${CC} ${CFLAGS} -I${INCLUDES}  ${OBJS} -L/usr/lib $(MLXFLAG) -o ${NAME}
 	@echo "fdf binary created!"
 
 #FDF object compilation
