@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/28 06:08:47 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/28 06:44:45 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,67 @@ void	square_put(t_data *img, int color, int size, int offset)
 }
 
 /*Bresenham's line drawing algorithm*/
-/* 
-void	put_line(t_data *data, int x0, int y0, int x1, int x2, int color)
+int	ft_abs(int v)
 {
+	if (v < 0)
+		return (-v);
+	return (v);
+}
 
+void ft_swap(int *a, int *b)
+{
+	int tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;	
+}
+
+void	put_line(t_data *data, int x0, int y0, int x1, int y1, int color)
+{
+	int	b_steep;
+	int	dx;
+	int	dy;
+	int	derror;
+	int	error;
+	int	x;
+	int	y;
 	
-} */
+	b_steep = 0;
+	if (ft_abs(x0 - x1) < ft_abs(y0 - y1))
+	{
+		ft_swap(&x0, &y0);
+		ft_swap(&x1, &y1);
+		b_steep = 1;
+	}
+	if (x0 > x1)
+	{
+		ft_swap (&x0, &x1);
+		ft_swap (&y0, &y1);
+	}
+	dx = x1 - x0;
+	dy = y1 - y0;
+	derror = ft_abs(dy) * 2;
+	error = 0;
+	y = y0;
+	x = x0 - 1;
+	while (++x <= x1)
+	{
+		if (b_steep)
+			pixel_put(data, y, x, color);
+		else
+			pixel_put(data, x, y, color);
+		error += derror;
+		if (error > dx)
+		{
+			if (y1 > y0)
+				y++;
+			else
+				y--;
+			error -= dx * 2;
+		}	
+	}
+}
 	/*
 	** After creating an image, we can call `mlx_get_data_addr`, we pass
 	** `bits_per_pixel`, `line_length`, and `endian` by reference. These will
@@ -114,7 +169,12 @@ int	main(void)
 	printf("bits per pixel: %i | line length: %i | endian: %i |\n", img.bits_per_pixel, img.line_length, img.endian);
 	mlx_win = mlx_new_window(mlx, 1920, 1080, "FDF");
 	//square_put(&img,0x00202020,150,20);
-	//put_line(&img, 10, 10, 100, 100, 0x0020FF20);	
+	put_line(&img, 10, 10, 10, 100, 0x0020FF20);
+	put_line(&img, 10, 100, 100, 100, 0x00FF2020);
+	put_line(&img, 100, 100, 100, 10, 0x002020FF);
+	put_line(&img, 100, 10, 10, 10, 0x00FF20FF);
+	put_line(&img, 10, 10, 100, 100, 0x0020FFFF);
+	put_line(&img, 10, 100, 100, 10, 0x002020FF);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
 }
