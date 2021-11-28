@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/12 12:15:16 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/28 06:12:33 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 # define FDF_H
 
 # include "mlx.h"
+# include "../libs/libftprintf/includes/ft_printf_bonus.h"
 
 #endif
