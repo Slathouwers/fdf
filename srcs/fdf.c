@@ -6,26 +6,115 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/12 14:00:54 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/28 06:08:47 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-typedef struct	s_data {
+typedef struct s_data {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}				t_data;
+}			t_data;
 
+
+int	create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+int	get_t(int trgb)
+{
+	return (trgb & (0xFF << 24));
+}
+
+int	get_r(int trgb)
+{
+	return (trgb & (0xFF << 16));
+}
+
+int	get_g(int trgb)
+{
+	return (trgb & (0xFF << 8));
+}
+
+int	get_b(int trgb)
+{
+	return (trgb & 0xFF);
+}
+
+int add_color(int trgb, int t_add, int r_add, int g_add, int b_add)
+{
+	int t;
+	int r;
+	int g;
+	int b;
+
+	t = get_t(trgb) + t_add;
+	r = get_r(trgb) + r_add;
+	g = get_g(trgb) + g_add;
+	b = get_b(trgb) + b_add;
+	return (create_trgb(t, r, g, b));
+}
+
+
+
+void	pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
+}
+
+void	square_put(t_data *img, int color, int size, int offset)
+{
+	int	i;
+
+	i = offset - 1;
+	while (++i < size + offset)
+		pixel_put(img, i, offset, add_color(color, 0, i, 0, 0));
+	i = offset - 1;
+	while (++i < size + offset)
+		pixel_put(img, offset, i, add_color(color, 0, 0, i, 0));
+	i = offset - 1;
+	while (++i < size + offset)
+		pixel_put(img, size + offset, i, add_color(color, 0, 0, 0, i));
+	i = offset - 1;
+	while (++i < size + offset)
+		pixel_put(img, i, size + offset, add_color(color, 0, i, 0, i));
+}
+
+/*Bresenham's line drawing algorithm*/
+/* 
+void	put_line(t_data *data, int x0, int y0, int x1, int x2, int color)
+{
+
+	
+} */
+	/*
+	** After creating an image, we can call `mlx_get_data_addr`, we pass
+	** `bits_per_pixel`, `line_length`, and `endian` by reference. These will
+	** then be set accordingly for the *current* data address.
+	*/
+#include <stdio.h>
 int	main(void)
 {
 	void	*mlx;
 	void	*mlx_win;
+	t_data	img;
 
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
+	img.img = mlx_new_image(mlx, 1920, 1080);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+			&img.endian);
+	printf("bits per pixel: %i | line length: %i | endian: %i |\n", img.bits_per_pixel, img.line_length, img.endian);
+	mlx_win = mlx_new_window(mlx, 1920, 1080, "FDF");
+	//square_put(&img,0x00202020,150,20);
+	//put_line(&img, 10, 10, 100, 100, 0x0020FF20);	
+	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
 }
