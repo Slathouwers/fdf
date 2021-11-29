@@ -6,30 +6,31 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/29 09:16:54 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/29 10:12:07 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
+/*STRUCTS*/
 typedef struct s_point
 {
 	int	x;
 	int	y;
 	int	z;
-	int	color;
 }		t_point;
 
-typedef t_list	t_coords;
+typedef t_list	t_z_list;
 
-typedef struct s_map
+typedef struct s_model
 {
 	int			width;
 	int			height;
-	t_coords	coords;
+	t_z_list	*z_list;
+	int			*z_arr;
 	int			z_min;
 	int			z_max;
-}		t_map;
+}		t_model;
 
 typedef struct s_fdf
 {
@@ -41,7 +42,9 @@ typedef struct s_fdf
 	int		line_length;
 	int		endian;
 }	t_fdf;
+/*----------*/
 
+/*COLOR*/
 int	create_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
@@ -80,7 +83,9 @@ int add_color(int trgb, int t_add, int r_add, int g_add, int b_add)
 	b = get_b(trgb) + b_add;
 	return (create_trgb(t, r, g, b));
 }
+/*----------*/
 
+/*DRAW*/
 void	pixel_put(t_fdf *data, int x, int y, int color)
 {
 	char	*dst;
@@ -89,25 +94,7 @@ void	pixel_put(t_fdf *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	square_put(t_fdf *img, int color, int size, int offset)
-{
-	int	i;
-
-	i = offset - 1;
-	while (++i < size + offset)
-		pixel_put(img, i, offset, add_color(color, 0, i, 0, 0));
-	i = offset - 1;
-	while (++i < size + offset)
-		pixel_put(img, offset, i, add_color(color, 0, 0, i, 0));
-	i = offset - 1;
-	while (++i < size + offset)
-		pixel_put(img, size + offset, i, add_color(color, 0, 0, 0, i));
-	i = offset - 1;
-	while (++i < size + offset)
-		pixel_put(img, i, size + offset, add_color(color, 0, i, 0, i));
-}
-
-/*Bresenham's line drawing algorithm*/
+	/*Bresenham's line drawing algorithm*/
 int	ft_abs(int v)
 {
 	if (v < 0)
@@ -175,7 +162,10 @@ void	put_line(t_fdf *data, t_point p0, t_point p1, int color)
 		}	
 	}
 }
+	/*----------*/
+/*----------*/
 
+/*TESTING*/
 void	put_test_square(t_fdf *fdf)
 {
 	t_point	arr[4];
@@ -195,22 +185,69 @@ void	put_test_square(t_fdf *fdf)
 	put_line(fdf, arr[0], arr[2], 0x0020FFFF);
 	put_line(fdf, arr[1], arr[3], 0x002020FF);
 }
+/*-------*/
 
+/*INIT*/
+void	fdf_init(t_fdf *fdf)
+{
+	fdf->mlx = mlx_init();
+	fdf->img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
+	fdf->addr = mlx_get_data_addr(fdf->img, &fdf->bits_per_pixel, &fdf->line_length,
+			&fdf->endian);
+	printf("bits per pixel: %i | line length: %i | endian: %i |\n", fdf->bits_per_pixel, fdf->line_length, fdf->endian);
+	fdf->mlx_win = mlx_new_window(fdf->mlx, WIDTH, HEIGHT, "FDF");
+}
+/*-------*/
+
+/*PARSING*/
+void	parse_split(char **split, t_model *model)
+{
+	
+}
+
+int	parse_model(t_model *model, int fd)
+{
+	char	*line;
+	char	**line_split;
+	
+	line = get_next_line(fd);
+	while (line)
+	{
+		line_split = ft_split(line, ' ');
+		if (!line_split)
+			exit(EXIT_FAILURE); //TODO: refactor to custom termination
+		parse_split(line_split, model);
+		ft_free_split(line_split);
+		free(line);
+		line = get_next_line(fd);
+		model->height++;
+	}
+	if(!model->z_list)
+		return (0);
+	return (1);
+}
+/*-------*/
+
+/*MAIN*/
 #include <stdio.h>
 int	main(int argc, char **argv)
 {
 	int		fd;
 	t_fdf	fdf;
-	t_map	map;
+	t_model	model;
 
 	errno = 0;
-	fdf.mlx = mlx_init();
-	fdf.img = mlx_new_image(fdf.mlx, 1920, 1080);
-	fdf.addr = mlx_get_data_addr(fdf.img, &fdf.bits_per_pixel, &fdf.line_length,
-			&fdf.endian);
-	printf("bits per pixel: %i | line length: %i | endian: %i |\n", fdf.bits_per_pixel, fdf.line_length, fdf.endian);
-	fdf.mlx_win = mlx_new_window(fdf.mlx, 1920, 1080, "FDF");
-	put_test_square(&fdf);
-	mlx_put_image_to_window(fdf.mlx, fdf.mlx_win, fdf.img, 0, 0);
-	mlx_loop(fdf.mlx);
+	if (argc == 2)
+	{
+		fd = open(argv[1], O_RDONLY);
+		if (fd < 0)
+			exit(EXIT_FAILURE); //TODO: refactor to custom termination
+		if (!parse_model(&model, fd))
+			exit(EXIT_FAILURE); //TODO: refactor to custom termination
+		fdf_init(&fdf);
+		put_test_square(&fdf);
+		mlx_put_image_to_window(fdf.mlx, fdf.mlx_win, fdf.img, 0, 0);
+		mlx_loop(fdf.mlx);
+	}
 }
+/*----------*/
