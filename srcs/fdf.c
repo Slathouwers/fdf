@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/29 10:12:07 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/29 10:46:22 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,35 @@ void	pixel_put(t_fdf *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-	/*Bresenham's line drawing algorithm*/
+/*PUT IN LIBFT!!*/
+int	ft_isint(const char *str)
+{
+	int			sign;
+	int			i;
+	long long	num;
+
+	if (!str)
+		return (0);
+	i = 0;
+	sign = 1;
+	num = 0;
+	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		num = num * 10 + (str[i] - '0');
+		i++;
+	}
+	return ((num * sign) <= 2147483647 && (num * sign) >= -2147483648);
+}
+
 int	ft_abs(int v)
 {
 	if (v < 0)
@@ -111,6 +139,7 @@ void ft_swap(int *a, int *b)
 	*b = tmp;
 }
 
+	/*Bresenham's line drawing algorithm*/
 static int
 	set_up_direction(t_point *p0, t_point *p1, t_point *d, int (*error)[2])
 {
@@ -200,9 +229,27 @@ void	fdf_init(t_fdf *fdf)
 /*-------*/
 
 /*PARSING*/
+
+t_z_list *get_z_val(char *s)
+{
+	if (!ft_isint(s))
+		exit(EXIT_FAILURE);
+	return (ft_atoi(s));
+}
 void	parse_split(char **split, t_model *model)
 {
-	
+	int	width;
+
+	width = 0;
+	while (*split)
+	{
+		ft_lstadd_back(model->z_list, get_z_val(*split++));
+		width++;
+	}
+	if (!model->height)
+		model->width = width;
+	else if (model->width != width)
+		exit(EXIT_FAILURE); //TODO: refactor to custom termination
 }
 
 int	parse_model(t_model *model, int fd)
