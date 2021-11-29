@@ -6,20 +6,30 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/28 06:44:45 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/29 08:33:18 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-typedef struct s_data {
+typedef struct s_point
+{
+	int	x;
+	int	y;
+	int	z;
+	int	color;
+}		t_point;
+
+typedef struct s_fdf
+{
+	void	*mlx;
+	void	*mlx_win;
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}			t_data;
-
+}	t_fdf;
 
 int	create_trgb(int t, int r, int g, int b)
 {
@@ -60,9 +70,7 @@ int add_color(int trgb, int t_add, int r_add, int g_add, int b_add)
 	return (create_trgb(t, r, g, b));
 }
 
-
-
-void	pixel_put(t_data *data, int x, int y, int color)
+void	pixel_put(t_fdf *data, int x, int y, int color)
 {
 	char	*dst;
 
@@ -70,7 +78,7 @@ void	pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	square_put(t_data *img, int color, int size, int offset)
+void	square_put(t_fdf *img, int color, int size, int offset)
 {
 	int	i;
 
@@ -98,83 +106,91 @@ int	ft_abs(int v)
 
 void ft_swap(int *a, int *b)
 {
-	int tmp;
+	int	tmp;
 
 	tmp = *a;
 	*a = *b;
-	*b = tmp;	
+	*b = tmp;
 }
 
-void	put_line(t_data *data, int x0, int y0, int x1, int y1, int color)
+static int
+	set_up_direction(t_point *p0, t_point *p1, t_point *d, int (*error)[2])
 {
 	int	b_steep;
-	int	dx;
-	int	dy;
-	int	derror;
-	int	error;
-	int	x;
-	int	y;
-	
+
 	b_steep = 0;
-	if (ft_abs(x0 - x1) < ft_abs(y0 - y1))
+	if (ft_abs(p0->x - p1->x) < ft_abs(p0->y - p1->y))
 	{
-		ft_swap(&x0, &y0);
-		ft_swap(&x1, &y1);
+		ft_swap(&p0->x, &p0->y);
+		ft_swap(&p1->x, &p1->y);
 		b_steep = 1;
 	}
-	if (x0 > x1)
+	if (p0->x > p1->x)
 	{
-		ft_swap (&x0, &x1);
-		ft_swap (&y0, &y1);
+		ft_swap (&p0->x, &p1->x);
+		ft_swap (&p0->y, &p1->y);
 	}
-	dx = x1 - x0;
-	dy = y1 - y0;
-	derror = ft_abs(dy) * 2;
-	error = 0;
-	y = y0;
-	x = x0 - 1;
-	while (++x <= x1)
+	d->x = p1->x - p0->x;
+	d->y = p1->y - p0->y;
+	(*error)[0] = ft_abs(d->y) * 2;
+	(*error)[1] = 0;
+	return (b_steep);
+}
+
+void	put_line(t_fdf *data, t_point p0, t_point p1, int color)
+{
+	int		b_steep;
+	t_point	d;
+	int		error[2];
+	t_point	curr;
+
+	b_steep = set_up_direction(&p0, &p1, &d, &error);
+	curr.y = p0.y;
+	curr.x = p0.x - 1;
+	while (++curr.x <= p1.x)
 	{
 		if (b_steep)
-			pixel_put(data, y, x, color);
+			pixel_put(data, curr.y, curr.x, color);
 		else
-			pixel_put(data, x, y, color);
-		error += derror;
-		if (error > dx)
+			pixel_put(data, curr.x, curr.y, color);
+		error[1] += error[0];
+		if (error[1] > d.x)
 		{
-			if (y1 > y0)
-				y++;
+			if (p1.y > p0.y)
+				curr.y++;
 			else
-				y--;
-			error -= dx * 2;
+				curr.y--;
+			error[1] -= d.x * 2;
 		}	
 	}
 }
-	/*
-	** After creating an image, we can call `mlx_get_data_addr`, we pass
-	** `bits_per_pixel`, `line_length`, and `endian` by reference. These will
-	** then be set accordingly for the *current* data address.
-	*/
+
 #include <stdio.h>
 int	main(void)
 {
-	void	*mlx;
-	void	*mlx_win;
-	t_data	img;
+	t_fdf	fdf;
+	t_point	arr[4];
 
-	mlx = mlx_init();
-	img.img = mlx_new_image(mlx, 1920, 1080);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-			&img.endian);
-	printf("bits per pixel: %i | line length: %i | endian: %i |\n", img.bits_per_pixel, img.line_length, img.endian);
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "FDF");
-	//square_put(&img,0x00202020,150,20);
-	put_line(&img, 10, 10, 10, 100, 0x0020FF20);
-	put_line(&img, 10, 100, 100, 100, 0x00FF2020);
-	put_line(&img, 100, 100, 100, 10, 0x002020FF);
-	put_line(&img, 100, 10, 10, 10, 0x00FF20FF);
-	put_line(&img, 10, 10, 100, 100, 0x0020FFFF);
-	put_line(&img, 10, 100, 100, 10, 0x002020FF);
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	mlx_loop(mlx);
+	fdf.mlx = mlx_init();
+	fdf.img = mlx_new_image(fdf.mlx, 1920, 1080);
+	fdf.addr = mlx_get_data_addr(fdf.img, &fdf.bits_per_pixel, &fdf.line_length,
+			&fdf.endian);
+	printf("bits per pixel: %i | line length: %i | endian: %i |\n", fdf.bits_per_pixel, fdf.line_length, fdf.endian);
+	fdf.mlx_win = mlx_new_window(fdf.mlx, 1920, 1080, "FDF");
+	arr[0].x = 10;
+	arr[0].y = 10;
+	arr[1].x = 10;
+	arr[1].y = 100;
+	arr[2].x = 100;
+	arr[2].y = 100;
+	arr[3].x = 100;
+	arr[3].y = 10;
+	put_line(&fdf, arr[0], arr[1], 0x0020FF20);
+	put_line(&fdf, arr[1], arr[2], 0x00FF2020);
+	put_line(&fdf, arr[2], arr[3], 0x002020FF);
+	put_line(&fdf, arr[3], arr[0], 0x00FF20FF);
+	put_line(&fdf, arr[0], arr[2], 0x0020FFFF);
+	put_line(&fdf, arr[1], arr[3], 0x002020FF);
+	mlx_put_image_to_window(fdf.mlx, fdf.mlx_win, fdf.img, 0, 0);
+	mlx_loop(fdf.mlx);
 }
