@@ -6,13 +6,11 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/29 13:25:16 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/29 15:28:03 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
-
-
 
 /*COLOR*/
 int	create_trgb(int t, int r, int g, int b)
