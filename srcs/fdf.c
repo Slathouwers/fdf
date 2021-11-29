@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/29 10:48:33 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/29 11:42:27 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,25 +186,17 @@ void	put_test_square(t_fdf *fdf)
 }
 /*-------*/
 
-/*INIT*/
-void	fdf_init(t_fdf *fdf)
-{
-	fdf->mlx = mlx_init();
-	fdf->img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
-	fdf->addr = mlx_get_data_addr(fdf->img, &fdf->bits_per_pixel, &fdf->line_length,
-			&fdf->endian);
-	printf("bits per pixel: %i | line length: %i | endian: %i |\n", fdf->bits_per_pixel, fdf->line_length, fdf->endian);
-	fdf->mlx_win = mlx_new_window(fdf->mlx, WIDTH, HEIGHT, "FDF");
-}
-/*-------*/
 
 /*PARSING*/
 
 t_z_list *get_z_val(char *s)
 {
+	int	*i;
 	if (!ft_isint(s))
 		exit(EXIT_FAILURE);
-	return (ft_atoi(s));
+	i = (int *) malloc(sizeof(int));
+	*i = ft_atoi(s);
+	return (ft_lstnew(i));
 }
 void	parse_split(char **split, t_model *model)
 {
@@ -213,8 +205,9 @@ void	parse_split(char **split, t_model *model)
 	width = 0;
 	while (*split)
 	{
-		ft_lstadd_back(model->z_list, get_z_val(*split++));
+		ft_lstadd_back(&model->z_list, get_z_val(*split));
 		width++;
+		split++;
 	}
 	if (!model->height)
 		model->width = width;
@@ -227,6 +220,7 @@ int	parse_model(t_model *model, int fd)
 	char	*line;
 	char	**line_split;
 	
+	model->z_list = NULL;
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -245,8 +239,46 @@ int	parse_model(t_model *model, int fd)
 }
 /*-------*/
 
+void print_z_list(t_model *model)
+{
+	t_z_list	*ptr;
+	int			width;
+	
+	ptr = model->z_list;
+	width = model->width;
+	while (ptr)
+	{
+		ft_printf("val: %i| ", *(int *)ptr->content);
+		ptr = ptr->next;
+		if (!--width)
+		{
+			ft_printf("\n");
+			width = model->width;
+		}
+	}
+	ft_printf("Total = %i | Heigth = %i | Width = %i", ft_lstsize(model->z_list), model->height, model->width);
+}
+
+/*INIT*/
+void	fdf_init(t_fdf *fdf)
+{
+	ft_bzero(fdf, sizeof(t_fdf));
+	fdf->mlx = mlx_init();
+	fdf->img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
+	fdf->addr = mlx_get_data_addr(fdf->img, &fdf->bits_per_pixel, &fdf->line_length,
+			&fdf->endian);
+	ft_printf("bits per pixel: %i | line length: %i | endian: %i |\n", fdf->bits_per_pixel, fdf->line_length, fdf->endian);
+	fdf->mlx_win = mlx_new_window(fdf->mlx, WIDTH, HEIGHT, "FDF");
+}
+
+void	model_init(t_model *model)
+{
+	ft_bzero(model, sizeof(t_model));
+}
+/*-------*/
+
+
 /*MAIN*/
-#include <stdio.h>
 int	main(int argc, char **argv)
 {
 	int		fd;
@@ -256,13 +288,14 @@ int	main(int argc, char **argv)
 	errno = 0;
 	if (argc == 2)
 	{
+		model_init(&model);
 		fd = open(argv[1], O_RDONLY);
 		if (fd < 0)
 			exit(EXIT_FAILURE); //TODO: refactor to custom termination
 		if (!parse_model(&model, fd))
 			exit(EXIT_FAILURE); //TODO: refactor to custom termination
 		fdf_init(&fdf);
-		put_test_square(&fdf);
+		print_z_list(&model);
 		mlx_put_image_to_window(fdf.mlx, fdf.mlx_win, fdf.img, 0, 0);
 		mlx_loop(fdf.mlx);
 	}

@@ -27,11 +27,11 @@
 #ifndef MLX_H
 # define MLX_H
 
-typedef struct s_point
+typedef struct s_pixelpoint
 {
 	int	x;
 	int	y;
-}		t_point;
+}		t_pixelpoint;
 
 void	*mlx_init(void);
 /*

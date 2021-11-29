@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/12 11:41:21 by slathouw          #+#    #+#              #
-#    Updated: 2021/11/28 06:14:14 by slathouw         ###   ########.fr        #
+#    Updated: 2021/11/29 11:13:04 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME 	= fdf
 INCLUDES= includes
 LIBFT 	= libs/libftprintf
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -g
 MLXFLAG = -lmlx -lXext -lX11
 OBJDIR	= obj
 
