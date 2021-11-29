@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/29 11:42:27 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/29 13:25:16 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,34 @@ void	put_test_square(t_fdf *fdf)
 
 /*PARSING*/
 
+void set_z_arr(t_model *model)
+{
+	t_z_list	*ptr;
+	size_t		i;
+	size_t		arr_size;
+
+	arr_size = model->width * model->height;
+	model->z_arr = (int *)ft_calloc(arr_size, sizeof(int));
+	if (!model->z_arr)
+		exit(EXIT_FAILURE);
+	i = 0;
+	ptr = model->z_list;
+	model->z_max = -2147483648;
+	model->z_min = 2147483647;
+	while(ptr)
+	{
+		model->z_arr[i] = *(int *)ptr->content;
+		if (model->z_arr[i] > model->z_max)
+			model->z_max = model->z_arr[i];
+		if (model->z_arr[i] < model->z_min)
+			model->z_min = model->z_arr[i];
+		i++;
+		ptr = ptr->next;
+	}
+	ft_lstclear(&model->z_list, &free);
+	model->dz = model->z_max - model->z_min;
+}
+
 t_z_list *get_z_val(char *s)
 {
 	int	*i;
@@ -235,6 +263,7 @@ int	parse_model(t_model *model, int fd)
 	}
 	if(!model->z_list)
 		return (0);
+	set_z_arr(model);
 	return (1);
 }
 /*-------*/
@@ -259,6 +288,25 @@ void print_z_list(t_model *model)
 	ft_printf("Total = %i | Heigth = %i | Width = %i", ft_lstsize(model->z_list), model->height, model->width);
 }
 
+void print_z_arr(t_model *model)
+{
+	t_z_list	*ptr;
+	int			width;
+	
+	ptr = model->z_list;
+	width = model->width;
+	while (ptr)
+	{
+		ft_printf("val: %i| ", *(int *)ptr->content);
+		ptr = ptr->next;
+		if (!--width)
+		{
+			ft_printf("\n");
+			width = model->width;
+		}
+	}
+	ft_printf("Total = %i | Heigth = %i | Width = %i", ft_lstsize(model->z_list), model->height, model->width);
+}
 /*INIT*/
 void	fdf_init(t_fdf *fdf)
 {

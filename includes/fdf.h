@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/29 10:48:35 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/29 13:08:05 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_model
 	int			*z_arr;
 	int			z_min;
 	int			z_max;
+	int			dz;
 }		t_model;
 
 typedef struct s_fdf
