@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/29 08:33:18 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/29 09:16:54 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,17 @@ typedef struct s_point
 	int	z;
 	int	color;
 }		t_point;
+
+typedef t_list	t_coords;
+
+typedef struct s_map
+{
+	int			width;
+	int			height;
+	t_coords	coords;
+	int			z_min;
+	int			z_max;
+}		t_map;
 
 typedef struct s_fdf
 {
@@ -165,18 +176,10 @@ void	put_line(t_fdf *data, t_point p0, t_point p1, int color)
 	}
 }
 
-#include <stdio.h>
-int	main(void)
+void	put_test_square(t_fdf *fdf)
 {
-	t_fdf	fdf;
 	t_point	arr[4];
 
-	fdf.mlx = mlx_init();
-	fdf.img = mlx_new_image(fdf.mlx, 1920, 1080);
-	fdf.addr = mlx_get_data_addr(fdf.img, &fdf.bits_per_pixel, &fdf.line_length,
-			&fdf.endian);
-	printf("bits per pixel: %i | line length: %i | endian: %i |\n", fdf.bits_per_pixel, fdf.line_length, fdf.endian);
-	fdf.mlx_win = mlx_new_window(fdf.mlx, 1920, 1080, "FDF");
 	arr[0].x = 10;
 	arr[0].y = 10;
 	arr[1].x = 10;
@@ -185,12 +188,29 @@ int	main(void)
 	arr[2].y = 100;
 	arr[3].x = 100;
 	arr[3].y = 10;
-	put_line(&fdf, arr[0], arr[1], 0x0020FF20);
-	put_line(&fdf, arr[1], arr[2], 0x00FF2020);
-	put_line(&fdf, arr[2], arr[3], 0x002020FF);
-	put_line(&fdf, arr[3], arr[0], 0x00FF20FF);
-	put_line(&fdf, arr[0], arr[2], 0x0020FFFF);
-	put_line(&fdf, arr[1], arr[3], 0x002020FF);
+	put_line(fdf, arr[0], arr[1], 0x0020FF20);
+	put_line(fdf, arr[1], arr[2], 0x00FF2020);
+	put_line(fdf, arr[2], arr[3], 0x002020FF);
+	put_line(fdf, arr[3], arr[0], 0x00FF20FF);
+	put_line(fdf, arr[0], arr[2], 0x0020FFFF);
+	put_line(fdf, arr[1], arr[3], 0x002020FF);
+}
+
+#include <stdio.h>
+int	main(int argc, char **argv)
+{
+	int		fd;
+	t_fdf	fdf;
+	t_map	map;
+
+	errno = 0;
+	fdf.mlx = mlx_init();
+	fdf.img = mlx_new_image(fdf.mlx, 1920, 1080);
+	fdf.addr = mlx_get_data_addr(fdf.img, &fdf.bits_per_pixel, &fdf.line_length,
+			&fdf.endian);
+	printf("bits per pixel: %i | line length: %i | endian: %i |\n", fdf.bits_per_pixel, fdf.line_length, fdf.endian);
+	fdf.mlx_win = mlx_new_window(fdf.mlx, 1920, 1080, "FDF");
+	put_test_square(&fdf);
 	mlx_put_image_to_window(fdf.mlx, fdf.mlx_win, fdf.img, 0, 0);
 	mlx_loop(fdf.mlx);
 }
