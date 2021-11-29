@@ -27,6 +27,12 @@
 #ifndef MLX_H
 # define MLX_H
 
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}		t_point;
+
 void	*mlx_init(void);
 /*
 **  needed before everything else.
@@ -42,6 +48,7 @@ void	*mlx_new_window(void *mlx_ptr, int size_x, int size_y, char *title);
 **  return void *0 if failed
 */
 int		mlx_clear_window(void *mlx_ptr, void *win_ptr);
+//TODO: repale x and y with t_point
 int		mlx_pixel_put(void *mlx_ptr, void *win_ptr, int x, int y, int color);
 /*
 **  origin for x & y is top left corner of the window
@@ -65,6 +72,7 @@ char	*mlx_get_data_addr(void *img_ptr, int *bits_per_pixel,
 **  endian : 0 = sever X is little endian, 1 = big endian
 **  for mlx_new_image2, 2nd arg of mlx_get_data_addr is number_of_planes
 */
+//TODO: replace x and y with t_point
 int		mlx_put_image_to_window(void *mlx_ptr, void *win_ptr, void *img_ptr,
 			int x, int y);
 int		mlx_get_color_value(void *mlx_ptr, int color);
@@ -72,14 +80,13 @@ int		mlx_get_color_value(void *mlx_ptr, int color);
 /*
 ** dealing with Events
 */
+int		mlx_mouse_hook(void *win_ptr, int (*funct_ptr)(), void *param);
+int		mlx_key_hook(void *win_ptr, int (*funct_ptr)(), void *param);
+int		mlx_expose_hook(void *win_ptr, int (*funct_ptr)(), void *param);
 
-int		mlx_mouse_hook (void *win_ptr, int (*funct_ptr)(), void *param);
-int		mlx_key_hook (void *win_ptr, int (*funct_ptr)(), void *param);
-int		mlx_expose_hook (void *win_ptr, int (*funct_ptr)(), void *param);
-
-int		mlx_loop_hook (void *mlx_ptr, int (*funct_ptr)(), void *param);
-int		mlx_loop (void *mlx_ptr);
-int 	mlx_loop_end (void *mlx_ptr);
+int		mlx_loop_hook(void *mlx_ptr, int (*funct_ptr)(), void *param);
+int		mlx_loop(void *mlx_ptr);
+int		mlx_loop_end(void *mlx_ptr);
 
 /*
 **  hook funct are called as follow :
@@ -94,7 +101,7 @@ int 	mlx_loop_end (void *mlx_ptr);
 /*
 **  Usually asked...
 */
-
+//TODO: replace x, y with t_point
 int		mlx_string_put(void *mlx_ptr, void *win_ptr, int x, int y, int color,
 			char *string);
 void	mlx_set_font(void *mlx_ptr, void *win_ptr, char *name);
@@ -114,7 +121,7 @@ int		mlx_destroy_display(void *mlx_ptr);
 */
 
 int		mlx_hook(void *win_ptr, int x_event, int x_mask,
-        	int (*funct)(), void *param);
+			int (*funct)(), void *param);
 
 int		mlx_do_key_autorepeatoff(void *mlx_ptr);
 int		mlx_do_key_autorepeaton(void *mlx_ptr);
