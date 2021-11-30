@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/29 13:08:05 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/11/30 12:42:09 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <stdlib.h>
+/* <stdio.h> for perror() */
+# include <stdio.h>
 
 # define HEIGHT			1080
 # define WIDTH			1920
