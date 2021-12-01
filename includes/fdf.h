@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/29 13:08:05 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/01 12:50:13 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 # define FDF_H
 
 # include "mlx.h"
+# include "../srcs/lin_alg/lin_alg.h"
 # include "../libs/libftprintf/includes/ft_printf_bonus.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <stdio.h>
 
 # define HEIGHT			1080
 # define WIDTH			1920

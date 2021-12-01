@@ -6,11 +6,74 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/11/29 15:28:03 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/01 09:02:55 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
+
+/*UTILS*/
+
+void	terminate(char *err_message)
+{
+	if (errno == 0)
+		ft_putendl_fd(err_message, 2);
+	else
+		perror(err_message);
+	exit(EXIT_FAILURE);
+}
+
+int		get_index(int x, int y, int width)
+{
+	return (y * width + x);
+}
+
+/*PUT IN LIBFT!!*/
+int	ft_isint(const char *str)
+{
+	int			sign;
+	int			i;
+	long long	num;
+
+	if (!str)
+		return (0);
+	i = 0;
+	sign = 1;
+	num = 0;
+	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		num = num * 10 + (str[i] - '0');
+		i++;
+	}
+	return ((num * sign) <= 2147483647 && (num * sign) >= -2147483648);
+}
+
+int	ft_abs(int v)
+{
+	if (v < 0)
+		return (-v);
+	return (v);
+}
+
+void ft_swap(int *a, int *b)
+{
+	int	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+/*-----------------*/
+
 
 /*COLOR*/
 int	create_trgb(int t, int r, int g, int b)
@@ -60,51 +123,6 @@ void	pixel_put(t_fdf *data, int x, int y, int color)
 
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
-}
-
-/*PUT IN LIBFT!!*/
-int	ft_isint(const char *str)
-{
-	int			sign;
-	int			i;
-	long long	num;
-
-	if (!str)
-		return (0);
-	i = 0;
-	sign = 1;
-	num = 0;
-	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
-		|| str[i] == '\f' || str[i] == '\r')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		num = num * 10 + (str[i] - '0');
-		i++;
-	}
-	return ((num * sign) <= 2147483647 && (num * sign) >= -2147483648);
-}
-
-int	ft_abs(int v)
-{
-	if (v < 0)
-		return (-v);
-	return (v);
-}
-
-void ft_swap(int *a, int *b)
-{
-	int	tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
 }
 
 	/*Bresenham's line drawing algorithm*/
@@ -182,11 +200,50 @@ void	put_test_square(t_fdf *fdf)
 	put_line(fdf, arr[0], arr[2], 0x0020FFFF);
 	put_line(fdf, arr[1], arr[3], 0x002020FF);
 }
+
+void print_z_list(t_model *model)
+{
+	t_z_list	*ptr;
+	int			width;
+	
+	ptr = model->z_list;
+	width = model->width;
+	while (ptr)
+	{
+		ft_printf("val: %i| ", *(int *)ptr->content);
+		ptr = ptr->next;
+		if (!--width)
+		{
+			ft_printf("\n");
+			width = model->width;
+		}
+	}
+	ft_printf("Total = %i | Heigth = %i | Width = %i", ft_lstsize(model->z_list), model->height, model->width);
+}
+
+void print_z_arr(t_model *model)
+{
+	int	*ptr;
+	int x;
+	int y;
+	
+	ptr = model->z_arr;
+	x = -1;
+	y = -1;
+	while (++y < model->height)
+	{
+		while (++x < model->width)
+			ft_printf("val: %i| ", ptr[get_index(x, y, model->width)]);
+		x = -1;
+		ft_printf("\n");
+	}
+	ft_printf("Total = %i | Heigth = %i | Width = %i", get_index(0, y, model->width), model->height, model->width);
+}
+
 /*-------*/
 
 
 /*PARSING*/
-
 void set_z_arr(t_model *model)
 {
 	t_z_list	*ptr;
@@ -238,7 +295,7 @@ void	parse_split(char **split, t_model *model)
 	if (!model->height)
 		model->width = width;
 	else if (model->width != width)
-		exit(EXIT_FAILURE); //TODO: refactor to custom termination
+		terminate("Map ERROR: line length inconsiteny!");
 }
 
 int	parse_model(t_model *model, int fd)
@@ -252,7 +309,7 @@ int	parse_model(t_model *model, int fd)
 	{
 		line_split = ft_split(line, ' ');
 		if (!line_split)
-			exit(EXIT_FAILURE); //TODO: refactor to custom termination
+			terminate("Map ERROR: Memory insufficient!");
 		parse_split(line_split, model);
 		ft_free_split(line_split);
 		free(line);
@@ -266,45 +323,6 @@ int	parse_model(t_model *model, int fd)
 }
 /*-------*/
 
-void print_z_list(t_model *model)
-{
-	t_z_list	*ptr;
-	int			width;
-	
-	ptr = model->z_list;
-	width = model->width;
-	while (ptr)
-	{
-		ft_printf("val: %i| ", *(int *)ptr->content);
-		ptr = ptr->next;
-		if (!--width)
-		{
-			ft_printf("\n");
-			width = model->width;
-		}
-	}
-	ft_printf("Total = %i | Heigth = %i | Width = %i", ft_lstsize(model->z_list), model->height, model->width);
-}
-
-void print_z_arr(t_model *model)
-{
-	t_z_list	*ptr;
-	int			width;
-	
-	ptr = model->z_list;
-	width = model->width;
-	while (ptr)
-	{
-		ft_printf("val: %i| ", *(int *)ptr->content);
-		ptr = ptr->next;
-		if (!--width)
-		{
-			ft_printf("\n");
-			width = model->width;
-		}
-	}
-	ft_printf("Total = %i | Heigth = %i | Width = %i", ft_lstsize(model->z_list), model->height, model->width);
-}
 /*INIT*/
 void	fdf_init(t_fdf *fdf)
 {
@@ -337,11 +355,11 @@ int	main(int argc, char **argv)
 		model_init(&model);
 		fd = open(argv[1], O_RDONLY);
 		if (fd < 0)
-			exit(EXIT_FAILURE); //TODO: refactor to custom termination
+			terminate("Map ERROR: No such file");
 		if (!parse_model(&model, fd))
-			exit(EXIT_FAILURE); //TODO: refactor to custom termination
+			terminate("Map ERROR: Parsing failed-> z_list empty");
 		fdf_init(&fdf);
-		print_z_list(&model);
+		print_z_arr(&model);
 		mlx_put_image_to_window(fdf.mlx, fdf.mlx_win, fdf.img, 0, 0);
 		mlx_loop(fdf.mlx);
 	}
