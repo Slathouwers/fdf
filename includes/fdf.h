@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/01 12:50:13 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/02 09:05:10 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <math.h>
 
 # define HEIGHT			1080
 # define WIDTH			1920
@@ -57,5 +58,14 @@ typedef struct s_fdf
 	int		endian;
 }	t_fdf;
 /*----------*/
+
+/*PROJECTIONS*/
+t_matr		isometric_proj(double fov_width, double fov_height);
+t_matr		perspective_proj(double n, double w, double h, double f);
+
+/*CAMERA*/
+/*SCREEN*/
+void		pixel_put(t_fdf *data, int x, int y, int color);
+void		put_line(t_fdf *data, t_point p0, t_point p1, int color);
 
 #endif
