@@ -6,124 +6,12 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/02 09:01:51 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/02 10:06:35 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 #include <math.h>
-
-#ifndef M_PI
-# define M_PI 3.141592653589793115997963468544185161590576171875
-#endif
-/*UTILS*/
-
-void	terminate(char *err_message)
-{
-	if (errno == 0)
-		ft_putendl_fd(err_message, 2);
-	else
-		perror(err_message);
-	exit(EXIT_FAILURE);
-}
-
-int	get_index(int x, int y, int width)
-{
-	return (y * width + x);
-}
-
-double	radians(double degrees)
-{
-	return (degrees * M_PI / 180.0);
-}
-
-/*PUT IN LIBFT!!*/
-int	ft_isint(const char *str)
-{
-	int			sign;
-	int			i;
-	long long	num;
-
-	if (!str)
-		return (0);
-	i = 0;
-	sign = 1;
-	num = 0;
-	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
-		|| str[i] == '\f' || str[i] == '\r')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		num = num * 10 + (str[i] - '0');
-		i++;
-	}
-	return ((num * sign) <= 2147483647 && (num * sign) >= -2147483648);
-}
-
-int	ft_abs(int v)
-{
-	if (v < 0)
-		return (-v);
-	return (v);
-}
-
-void ft_swap(int *a, int *b)
-{
-	int	tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
-/*-----------------*/
-
-
-/*COLOR*/
-int	create_trgb(int t, int r, int g, int b)
-{
-	return (t << 24 | r << 16 | g << 8 | b);
-}
-
-int	get_t(int trgb)
-{
-	return (trgb & (0xFF << 24));
-}
-
-int	get_r(int trgb)
-{
-	return (trgb & (0xFF << 16));
-}
-
-int	get_g(int trgb)
-{
-	return (trgb & (0xFF << 8));
-}
-
-int	get_b(int trgb)
-{
-	return (trgb & 0xFF);
-}
-
-int add_color(int trgb, int t_add, int r_add, int g_add, int b_add)
-{
-	int t;
-	int r;
-	int g;
-	int b;
-
-	t = get_t(trgb) + t_add;
-	r = get_r(trgb) + r_add;
-	g = get_g(trgb) + g_add;
-	b = get_b(trgb) + b_add;
-	return (create_trgb(t, r, g, b));
-}
-/*----------*/
 
 /*TESTING*/
 void	put_test_square(t_fdf *fdf)
@@ -146,7 +34,7 @@ void	put_test_square(t_fdf *fdf)
 	put_line(fdf, arr[1], arr[3], 0x002020FF);
 }
 
-void print_z_list(t_model *model)
+void	print_z_list(t_model *model)
 {
 	t_z_list	*ptr;
 	int			width;
@@ -166,7 +54,7 @@ void print_z_list(t_model *model)
 	ft_printf("Total = %i | Heigth = %i | Width = %i", ft_lstsize(model->z_list), model->height, model->width);
 }
 
-void print_z_arr(t_model *model)
+void	print_z_arr(t_model *model)
 {
 	int	*ptr;
 	int x;
@@ -189,7 +77,7 @@ void print_z_arr(t_model *model)
 
 
 /*PARSING*/
-void set_z_arr(t_model *model)
+void	set_z_arr(t_model *model)
 {
 	t_z_list	*ptr;
 	size_t		i;
@@ -203,7 +91,7 @@ void set_z_arr(t_model *model)
 	ptr = model->z_list;
 	model->z_max = -2147483648;
 	model->z_min = 2147483647;
-	while(ptr)
+	while (ptr)
 	{
 		model->z_arr[i] = *(int *)ptr->content;
 		if (model->z_arr[i] > model->z_max)
@@ -217,15 +105,17 @@ void set_z_arr(t_model *model)
 	model->dz = model->z_max - model->z_min;
 }
 
-t_z_list *get_z_val(char *s)
+t_z_list	*get_z_val(char *s)
 {
 	int	*i;
+	
 	if (!ft_isint(s))
 		exit(EXIT_FAILURE);
 	i = (int *) malloc(sizeof(int));
 	*i = ft_atoi(s);
 	return (ft_lstnew(i));
 }
+
 void	parse_split(char **split, t_model *model)
 {
 	int	width;
