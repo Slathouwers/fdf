@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/02 09:05:10 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/02 09:48:07 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,17 @@
 # include <stdio.h>
 # include <math.h>
 
+# ifndef M_PI
+#  define M_PI 3.141592653589793115997963468544185161590576171875
+# endif
+
 # define HEIGHT			1080
 # define WIDTH			1920
 # define MENU_WIDTH		250
+# define FOV 			120.
+
+# define PROJ_PERSPECTIVE 1
+# define PROJ_ISOMETRIC 0
 
 /*STRUCTS*/
 typedef struct s_point
@@ -47,6 +55,24 @@ typedef struct s_model
 	int			dz;
 }		t_model;
 
+/*
+* v1 = y-axis rotation aka yaw
+* v2 = x-axis rotation aka pitch
+* v3 = x/z-axis translation aka camera movement
+* proj = projection matrix
+* disp = viewport matrix
+*/
+typedef struct s_cam
+{
+	double	zoom;
+	int		projection_type;
+	t_matr	v1;
+	t_matr	v2;
+	t_matr	v3;
+	t_matr	proj;
+	t_matr	disp;
+}			t_cam;
+
 typedef struct s_fdf
 {
 	void	*mlx;
@@ -67,5 +93,21 @@ t_matr		perspective_proj(double n, double w, double h, double f);
 /*SCREEN*/
 void		pixel_put(t_fdf *data, int x, int y, int color);
 void		put_line(t_fdf *data, t_point p0, t_point p1, int color);
+
+/*UTILS*/
+void		terminate(char *err_message);
+int			get_index(int x, int y, int width);
+double		radians(double degrees);
+int			ft_isint(const char *str);
+int			ft_abs(int v);
+void		ft_swap(int *a, int *b);
+int			add_color(int trgb, int r_add, int g_add, int b_add);
+
+/*COLOR*/
+int			create_trgb(int t, int r, int g, int b);
+int			get_t(int trgb);
+int			get_r(int trgb);
+int			get_g(int trgb);
+int			get_b(int trgb);
 
 #endif
