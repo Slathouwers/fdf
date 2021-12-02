@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 09:20:20 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/01 12:54:08 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/02 09:51:01 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_vect	la_vect_cross(t_vect v, t_vect w);
 
 /*VECTOR TRANSFORMATIONS*/
 t_vect	la_vect_transform(t_vect v, t_matr m);
-t_vect	la_vect_transform_w(t_vect v, t_matr m);
+t_vect	la_vect_transform_div_w(t_vect v, t_matr m);
 
 /*MATRIX*/
 t_matr	la_matr_identity(void);
