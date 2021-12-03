@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/12 11:41:21 by slathouw          #+#    #+#              #
-#    Updated: 2021/12/02 09:21:31 by slathouw         ###   ########.fr        #
+#    Updated: 2021/12/03 13:31:46 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,12 @@ LADIR 	= srcs/lin_alg
 LASRCS 	= ${addprefix $(LADIR)/, $(LASOURCES)}
 LAOBJS	= ${addprefix $(OBJDIR)/la_, $(LASOURCES:.c=.o)}
 
+#FT_ARRAY files 
+ARRSOURCES	= array.c int_array.c ft_realloc.c
+ARRDIR 	= srcs/ft_array
+ARRSRCS = ${addprefix $(ARRDIR)/, $(ARRSOURCES)}
+ARROBJS	= ${addprefix $(OBJDIR)/arr_, $(ARRSOURCES:.c=.o)}
+
 ###############
 # COMPILATION #
 ###############
@@ -41,10 +47,10 @@ LAOBJS	= ${addprefix $(OBJDIR)/la_, $(LASOURCES:.c=.o)}
 all : 		${NAME}
 
 #FDF linking compilation
-$(NAME) :	$(OBJS) ${LAOBJS}
+$(NAME) :	$(OBJS) ${LAOBJS} ${ARROBJS}
 	@make -sC $(LIBFT)
 	@cp $(LIBFT)/libftprintf.a .
-	@${CC} ${CFLAGS} -I${INCLUDES}  ${OBJS} ${LAOBJS} -L/usr/lib $(MLXFLAG) libftprintf.a -o ${NAME}
+	@${CC} ${CFLAGS} -I${INCLUDES}  ${OBJS} ${LAOBJS} ${ARROBJS} -L/usr/lib $(MLXFLAG) libftprintf.a -o ${NAME}
 	@echo "fdf binary created!"
 
 #FDF object compilation
@@ -54,6 +60,11 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 #LA SOURCES object compilation
 $(OBJDIR)/la_%.o: $(LADIR)/%.c
+	@mkdir -p obj
+	@${CC} ${CFLAGS} -I ${INCLUDES} -c $< -o $@
+
+#ARR SOURCES object compilation
+$(OBJDIR)/arr_%.o: $(ARRDIR)/%.c
 	@mkdir -p obj
 	@${CC} ${CFLAGS} -I ${INCLUDES} -c $< -o $@
 
