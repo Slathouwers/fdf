@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/03 13:18:53 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/03 13:53:00 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,17 @@ void		put_line(t_fdf *data, t_point p0, t_point p1, int color);
 /*UTILS*/
 void		terminate(char *err_message);
 int			get_index(int x, int y, int width);
+/*TO LIBFT!!*/
 double		radians(double degrees);
+/*TO LIBFT!!*/
 int			ft_isint(const char *str);
+/*TO LIBFT!!*/
 int			ft_abs(int v);
+/*TO LIBFT!!*/
 void		ft_swap(int *a, int *b);
+/*TO LIBFT!!*/
+void		ft_swap_any(void *a, void *b, size_t size);
+
 int			add_color(int trgb, int r_add, int g_add, int b_add);
 
 /*COLOR*/
