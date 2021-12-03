@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/02 09:48:07 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/03 13:18:53 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "mlx.h"
 # include "../srcs/lin_alg/lin_alg.h"
+# include "../srcs/ft_array/ft_array.h"
 # include "../libs/libftprintf/includes/ft_printf_bonus.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -55,12 +56,14 @@ typedef struct s_model
 	int			dz;
 }		t_model;
 
-/*
-* v1 = y-axis rotation aka yaw
-* v2 = x-axis rotation aka pitch
-* v3 = x/z-axis translation aka camera movement
-* proj = projection matrix
-* disp = viewport matrix
+/* t_cam:
+*	double zoom = exponent for current zoom calculations
+* 	int projection_type = 1 for perspective, 0 for isometric
+*	t_matr v1 = y-axis rotation matrix aka yaw
+* 	t_matr v2 = x-axis rotation aka pitch
+* 	t_matr v3 = x/z-axis translation aka camera movement
+* 	t_matr proj = projection matrix
+* 	t_matr disp = viewport matrix
 */
 typedef struct s_cam
 {
