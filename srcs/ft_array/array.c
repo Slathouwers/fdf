@@ -6,14 +6,14 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 12:34:06 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/03 12:43:05 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/08 08:07:23 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_array.h"
 
 /*Initializes/mallocs array to hold items of 'item_size' */
-void	t_array_init(t_array *a, size_t item_size)
+void	ft_array_init(t_array *a, size_t item_size)
 {
 	a->size = 4;
 	a->item_size = item_size;
@@ -22,7 +22,7 @@ void	t_array_init(t_array *a, size_t item_size)
 }
 
 /*returns void *content at index i*/
-void	*t_array_get(t_array *a, int i)
+void	*ft_array_get(t_array *a, int i)
 {
 	if ((unsigned int)i >= a->count)
 		return (0);
@@ -30,7 +30,7 @@ void	*t_array_get(t_array *a, int i)
 }
 
 /*Doubles array size*/
-static void	*t_array_extend(t_array *a)
+static void	*ft_array_extend(t_array *a)
 {
 	a->size *= 2;
 	a->data = ft_realloc(a->data,
@@ -42,10 +42,10 @@ static void	*t_array_extend(t_array *a)
 /*adds void *content to back of array, doubling array size
 	when array limit reached
 */
-void	*t_array_add(t_array *a, void *content)
+void	*ft_array_add(t_array *a, void *content)
 {
 	if (a->count == a->size - 1)
-		if (!t_array_extend(a))
+		if (!ft_array_extend(a))
 			return (0);
 	ft_memcpy((char *)a->data + a->item_size * a->count, content, a->item_size);
 	a->count++;
@@ -53,7 +53,7 @@ void	*t_array_add(t_array *a, void *content)
 }
 
 /*Frees all data pointers in array*/
-void	t_array_del(t_array *a)
+void	ft_array_del(t_array *a)
 {
 	free(a->data);
 }
