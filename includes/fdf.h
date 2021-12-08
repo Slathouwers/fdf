@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/03 13:53:00 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/08 08:22:29 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,24 @@
 # define PROJ_ISOMETRIC 0
 
 /*STRUCTS*/
-typedef struct s_point
+typedef struct s_point2d
 {
 	int	x;
 	int	y;
-	int	z;
-}		t_point;
+}		t_point2d;
 
 typedef t_list	t_z_list;
+
+typedef struct s_mesh
+{
+	t_vect		*vertices;
+	t_array		arr_veritces;
+	t_array		arr_edges;
+	int			n_vertices;
+	t_point2d	*edges;
+	int			n_edges;
+	t_matr		m;
+}				t_mesh;
 
 typedef struct s_model
 {
@@ -85,17 +95,33 @@ typedef struct s_fdf
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		w;
+	int		h;
+	t_cam	cam;
+	t_mesh	mesh;
 }	t_fdf;
 /*----------*/
+
+/*3D MESH*/
+
+void		t_mesh_init(t_mesh *m);
+int			t_mesh_add_vertex(t_mesh *m, t_vect v);
+int			t_mesh_add_edge(t_mesh *m, t_point2d e);
+t_mesh		t_mesh_cube(int size);
+
 
 /*PROJECTIONS*/
 t_matr		isometric_proj(double fov_width, double fov_height);
 t_matr		perspective_proj(double n, double w, double h, double f);
 
 /*CAMERA*/
+void	t_cam_init_projection(t_cam *c);
+void	t_cam_init(t_cam *c, t_point2d display_res);
+void	t_cam_draw(t_cam *cam, t_fdf *fdf, t_mesh *mesh);
+
 /*SCREEN*/
 void		pixel_put(t_fdf *data, int x, int y, int color);
-void		put_line(t_fdf *data, t_point p0, t_point p1, int color);
+void		put_line(t_fdf *data, t_point2d p0, t_point2d p1, int color);
 
 /*UTILS*/
 void		terminate(char *err_message);
