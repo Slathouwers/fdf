@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:01:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/02 09:01:37 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/08 08:45:06 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	pixel_put(t_fdf *data, int x, int y, int color)
 
 	/*Bresenham's line drawing algorithm*/
 static int
-	set_up_direction(t_point *p0, t_point *p1, t_point *d, int (*error)[2])
+	set_up_direction(t_point2d *p0, t_point2d *p1, t_point2d *d, int (*error)[2])
 {
 	int	b_steep;
 
@@ -46,13 +46,17 @@ static int
 	return (b_steep);
 }
 
-void	put_line(t_fdf *data, t_point p0, t_point p1, int color)
+void	put_line(t_fdf *data, t_point2d p0, t_point2d p1, int color)
 {
 	int		b_steep;
-	t_point	d;
+	t_point2d	d;
 	int		error[2];
-	t_point	curr;
+	t_point2d	curr;
 
+	if ((p0.x < 0 || p0.y < 0 || p0.x >= data->w || p0.y >= data->h) &&
+		(p1.x < 0 || p1.y < 0 || p1.x >= data->w || p1.y >= data->h))
+		return ;
+	ft_printf("Line from {%i, %i} to {%i, %i}\n", p0.x, p0.y, p1.x, p1.y);
 	b_steep = set_up_direction(&p0, &p1, &d, &error);
 	curr.y = p0.y;
 	curr.x = p0.x - 1;
