@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/02 10:06:35 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/08 08:46:14 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /*TESTING*/
 void	put_test_square(t_fdf *fdf)
 {
-	t_point	arr[4];
+	t_point2d	arr[4];
 
 	arr[0].x = 10;
 	arr[0].y = 10;
@@ -57,8 +57,8 @@ void	print_z_list(t_model *model)
 void	print_z_arr(t_model *model)
 {
 	int	*ptr;
-	int x;
-	int y;
+	int	x;
+	int	y;
 	
 	ptr = model->z_arr;
 	x = -1;
@@ -72,9 +72,6 @@ void	print_z_arr(t_model *model)
 	}
 	ft_printf("Total = %i | Heigth = %i | Width = %i", get_index(0, y, model->width), model->height, model->width);
 }
-
-/*-------*/
-
 
 /*PARSING*/
 void	set_z_arr(t_model *model)
@@ -168,6 +165,9 @@ void	fdf_init(t_fdf *fdf)
 			&fdf->endian);
 	ft_printf("bits per pixel: %i | line length: %i | endian: %i |\n", fdf->bits_per_pixel, fdf->line_length, fdf->endian);
 	fdf->mlx_win = mlx_new_window(fdf->mlx, WIDTH, HEIGHT, "FDF");
+	fdf->w = WIDTH;
+	fdf->h = HEIGHT;
+	t_cam_init(&fdf->cam, (t_point2d){WIDTH, HEIGHT});
 }
 
 void	model_init(t_model *model)
@@ -176,25 +176,29 @@ void	model_init(t_model *model)
 }
 /*-------*/
 
-
 /*MAIN*/
 int	main(int argc, char **argv)
 {
-	int		fd;
+//	int		fd;
 	t_fdf	fdf;
-	t_model	model;
+//	t_model	model;
+
+	(void) argv;
 
 	errno = 0;
 	if (argc == 2)
 	{
-		model_init(&model);
+	/* 	model_init(&model);
 		fd = open(argv[1], O_RDONLY);
 		if (fd < 0)
 			terminate("Map ERROR: No such file");
 		if (!parse_model(&model, fd))
 			terminate("Map ERROR: Parsing failed-> z_list empty");
 		fdf_init(&fdf);
-		print_z_arr(&model);
+		print_z_arr(&model); */
+		fdf_init(&fdf);
+		fdf.mesh = t_mesh_cube(50);
+		t_cam_draw(&fdf.cam, &fdf, &fdf.mesh);
 		mlx_put_image_to_window(fdf.mlx, fdf.mlx_win, fdf.img, 0, 0);
 		mlx_loop(fdf.mlx);
 	}
