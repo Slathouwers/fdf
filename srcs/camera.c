@@ -6,11 +6,11 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:09:38 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/02 10:00:30 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/08 09:07:29 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/fdf.h"
+#include "../includes/fdf.h"
 
 void	t_cam_init_projection(t_cam *c)
 {
@@ -30,7 +30,7 @@ void	t_cam_init_projection(t_cam *c)
 				(double)HEIGHT * ze);
 }
 
-void	t_cam_init(t_cam *c, t_point display_res)
+void	t_cam_init(t_cam *c, t_point2d display_res)
 {
 	int	w;
 	int	h;
@@ -38,31 +38,39 @@ void	t_cam_init(t_cam *c, t_point display_res)
 	w = display_res.x;
 	h = display_res.y;
 	la_matr_reset(&c->v3);
-	la_matr_translate(&c->v3, (t_vect){0, 0, -400});
+	la_matr_translate(&c->v3, (t_vect){0, 200, -400});
 	c->v1 = (t_matr){{
 	{1, 0, 0, 0},
 	{0, 0, -1, 0},
 	{0, 1, 0, 0},
 	{0, 0, 0, 1}}};
 	la_matr_reset(&c->v2);
+	// test ISOMETRIC
+	c->v2 = la_matr_mul(c->v2, la_matr_rotation(
+			(t_vect){1, 0, 0},
+				1.07));
 	c->disp = (t_matr){{
 	{.5 * w, 0, 0, .5 * w},
 	{0, .5 * h, 0, .5 * h},
 	{0, 0, 0, 0},
 	{0, 0, 0, 1}}};
 	c->zoom = 0;
-	c->projection_type = PROJ_PERSPECTIVE;
+	c->projection_type = PROJ_ISOMETRIC;
 	t_cam_init_projection(c);
 }
 
-void	t_cam_draw(t_cam *cam, void *p, t_mesh *mesh)
+void	t_cam_draw(t_cam *cam, t_fdf *fdf, t_mesh *mesh)
 {
 	int		i;
-	t_vect	p1;
-	t_vect	p2;
+	t_vect	v1;
+	t_vect	v2;
 	t_matr	m;
-
+	t_point2d p1;
+	t_point2d p2;
+	
 	m = mesh->m;
+	// test ISOMETRIC
+	m = la_matr_rotation((t_vect) {0, 1, 0}, radians(45));
 	m = la_matr_mul(cam->v1, m);
 	m = la_matr_mul(cam->v2, m);
 	m = la_matr_mul(cam->v3, m);
@@ -70,17 +78,19 @@ void	t_cam_draw(t_cam *cam, void *p, t_mesh *mesh)
 	i = -1;
 	while (++i < mesh->n_edges)
 	{
-		p1 = mesh->vertices[mesh->edges[i].x].v;
-		p2 = mesh->vertices[mesh->edges[i].y].v;
-		p1 = la_vect_transform_div_w(p1, m);
-		if (p1.z < -1. || p1.z > 1.)
+		v1 = mesh->vertices[mesh->edges[i].x];
+		v2 = mesh->vertices[mesh->edges[i].y];
+		v1 = la_vect_transform_div_w(v1, m);
+		if (v1.z < -1. || v1.z > 1.)
 			continue ;
-		p2 = la_vect_transform_div_w(p2, m);
-		if (p2.z < -1. || p2.z > 1.)
+		v2 = la_vect_transform_div_w(v2, m);
+		if (v2.z < -1. || v2.z > 1.)
 			continue ;
-		p1 = la_vect_transform(p1, cam->disp);
-		p2 = la_vect_transform(p2, cam->disp);
-		line(p, p1, p2, (uint)(255 * GREEN));
+		v1 = la_vect_transform(v1, cam->disp);
+		p1 = (t_point2d){(int) round(v1.x), (int) round(v1.y)};
+		v2 = la_vect_transform(v2, cam->disp);
+		p2 = (t_point2d){(int) round(v2.x), (int) round(v2.y)};
+		put_line(fdf, p1, p2, 0x0020FF20);
 	}
 }
 /*
