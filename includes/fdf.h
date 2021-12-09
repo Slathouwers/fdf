@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/09 08:31:53 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/09 10:07:52 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ typedef struct s_point2d
 	int	x;
 	int	y;
 }		t_point2d;
-
-typedef t_list	t_z_list;
 
 typedef struct s_mesh
 {
@@ -99,6 +97,7 @@ typedef struct s_fdf
 	int		h;
 	t_cam	cam;
 	t_mesh	mesh;
+	t_map	map;
 }	t_fdf;
 /*----------*/
 
@@ -106,6 +105,8 @@ typedef struct s_fdf
 void		t_mesh_init(t_mesh *m);
 int			t_mesh_add_vertex(t_mesh *m, t_vect v);
 int			t_mesh_add_edge(t_mesh *m, t_point2d e);
+t_mesh		t_mesh_from_map(t_fdf *fdf);
+
 
 /*PROJECTIONS*/
 t_matr		isometric_proj(double fov_width, double fov_height);
