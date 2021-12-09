@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:14:11 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/02 09:17:06 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/09 08:24:42 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	terminate(char *err_message)
 	exit(EXIT_FAILURE);
 }
 
-int	get_index(int x, int y, int width)
+int	get_rc_index(int r, int c, int width)
 {
-	return (y * width + x);
+	return (c * width + r);
 }
 
 double	radians(double degrees)
