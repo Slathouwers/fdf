@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:09:38 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/08 09:07:29 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/09 09:05:13 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 void	t_cam_init_projection(t_cam *c)
 {
-	double	tg;
+	double	far;
 	double	near;
 	double	ze;
 
 	ze = exp(c->zoom / 100);
-	tg = sin(radians(FOV / 2)) / cos(radians(FOV / 2)) * ze;
+	far = sin(radians(FOV / 2)) / cos(radians(FOV / 2)) * ze;
 	near = 10.;
 	if (c->projection_type == PROJ_PERSPECTIVE)
-		c->proj = perspective_proj(near, tg * near,
-				tg * near * HEIGHT / WIDTH,
+		c->proj = perspective_proj(near, far * near,
+				far * near * HEIGHT / WIDTH,
 				9999.);
 	else
 		c->proj = isometric_proj((double)WIDTH * ze,
@@ -38,24 +38,25 @@ void	t_cam_init(t_cam *c, t_point2d display_res)
 	w = display_res.x;
 	h = display_res.y;
 	la_matr_reset(&c->v3);
-	la_matr_translate(&c->v3, (t_vect){0, 200, -400});
+// test ISOMETRIC: put camera back 600 and up 100 
+	la_matr_translate(&c->v3, (t_vect){0, 100, -600});
 	c->v1 = (t_matr){{
 	{1, 0, 0, 0},
 	{0, 0, -1, 0},
 	{0, 1, 0, 0},
 	{0, 0, 0, 1}}};
 	la_matr_reset(&c->v2);
-	// test ISOMETRIC
+// test ISOMETRIC: look down
 	c->v2 = la_matr_mul(c->v2, la_matr_rotation(
 			(t_vect){1, 0, 0},
-				1.07));
+				0.7));
 	c->disp = (t_matr){{
 	{.5 * w, 0, 0, .5 * w},
 	{0, .5 * h, 0, .5 * h},
 	{0, 0, 0, 0},
 	{0, 0, 0, 1}}};
 	c->zoom = 0;
-	c->projection_type = PROJ_ISOMETRIC;
+	c->projection_type = PROJ_PERSPECTIVE;
 	t_cam_init_projection(c);
 }
 
