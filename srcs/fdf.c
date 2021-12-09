@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/09 08:28:15 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/09 11:11:27 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,6 @@ void	fdf_init(t_fdf *fdf)
 	t_cam_init(&fdf->cam, (t_point2d){WIDTH, HEIGHT});
 }
 
-void	map_init(t_map *map)
-{
-	ft_bzero(map, sizeof(t_map));
-}
 /*-------*/
 
 /*MAIN*/
@@ -39,22 +35,18 @@ int	main(int argc, char **argv)
 {
 	int		fd;
 	t_fdf	fdf;
-	t_map	map;
-
-	(void) argv;
 
 	errno = 0;
 	if (argc == 2)
 	{
-	 	map_init(&map);
+		fdf_init(&fdf);
 		fd = open(argv[1], O_RDONLY);
 		if (fd < 0)
 			terminate("Map ERROR: No such file");
-		if (!parse_map(&map, fd))
+		if (!parse_map(&fdf.map, fd))
 			terminate("Map ERROR: Parsing failed-> z_list empty");
-		print_z_arr(&map);
-		fdf_init(&fdf);
-		fdf.mesh = t_mesh_cube(50);
+		print_z_arr(&fdf.map);
+		fdf.mesh = t_mesh_from_map(&fdf);
 		t_cam_draw(&fdf.cam, &fdf, &fdf.mesh);
 		mlx_put_image_to_window(fdf.mlx, fdf.mlx_win, fdf.img, 0, 0);
 		mlx_loop(fdf.mlx);
