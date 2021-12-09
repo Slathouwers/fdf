@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/08 08:22:29 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/09 08:31:53 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ typedef struct s_mesh
 	t_matr		m;
 }				t_mesh;
 
-typedef struct s_model
+typedef struct s_map
 {
 	int			width;
 	int			height;
-	t_z_list	*z_list;
-	int			*z_arr;
+	t_int_array	z_arr;
+	int			*z_data;
 	int			z_min;
 	int			z_max;
 	int			dz;
-}		t_model;
+}		t_map;
 
 /* t_cam:
 *	double zoom = exponent for current zoom calculations
@@ -103,12 +103,9 @@ typedef struct s_fdf
 /*----------*/
 
 /*3D MESH*/
-
 void		t_mesh_init(t_mesh *m);
 int			t_mesh_add_vertex(t_mesh *m, t_vect v);
 int			t_mesh_add_edge(t_mesh *m, t_point2d e);
-t_mesh		t_mesh_cube(int size);
-
 
 /*PROJECTIONS*/
 t_matr		isometric_proj(double fov_width, double fov_height);
@@ -124,20 +121,17 @@ void		pixel_put(t_fdf *data, int x, int y, int color);
 void		put_line(t_fdf *data, t_point2d p0, t_point2d p1, int color);
 
 /*UTILS*/
+	/*TO LIBFT!!*/
 void		terminate(char *err_message);
-int			get_index(int x, int y, int width);
-/*TO LIBFT!!*/
+int			get_rc_index(int r, int c, int width);
 double		radians(double degrees);
-/*TO LIBFT!!*/
 int			ft_isint(const char *str);
-/*TO LIBFT!!*/
 int			ft_abs(int v);
-/*TO LIBFT!!*/
 void		ft_swap(int *a, int *b);
-/*TO LIBFT!!*/
 void		ft_swap_any(void *a, void *b, size_t size);
-
+	/*----------*/
 int			add_color(int trgb, int r_add, int g_add, int b_add);
+/*-----------*/
 
 /*COLOR*/
 int			create_trgb(int t, int r, int g, int b);
@@ -145,5 +139,13 @@ int			get_t(int trgb);
 int			get_r(int trgb);
 int			get_g(int trgb);
 int			get_b(int trgb);
+
+/*PARSE MAP*/
+int	parse_map(t_map *model, int fd);
+
+/*TESTING UTILS*/
+void		print_z_arr(t_map *model);
+void		put_test_square(t_fdf *fdf);
+t_mesh		t_mesh_cube(int size);
 
 #endif
