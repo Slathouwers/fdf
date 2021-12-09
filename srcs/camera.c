@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:09:38 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/09 09:05:13 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/09 11:34:41 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	t_cam_init_projection(t_cam *c)
 				far * near * HEIGHT / WIDTH,
 				9999.);
 	else
-		c->proj = isometric_proj((double)WIDTH * ze,
-				(double)HEIGHT * ze);
+		c->proj = isometric_proj((double)WIDTH * ze*.6,
+				(double)HEIGHT * ze*.6);
 }
 
 void	t_cam_init(t_cam *c, t_point2d display_res)
@@ -39,7 +39,7 @@ void	t_cam_init(t_cam *c, t_point2d display_res)
 	h = display_res.y;
 	la_matr_reset(&c->v3);
 // test ISOMETRIC: put camera back 600 and up 100 
-	la_matr_translate(&c->v3, (t_vect){0, 100, -600});
+	la_matr_translate(&c->v3, (t_vect){0, 0, -600});
 	c->v1 = (t_matr){{
 	{1, 0, 0, 0},
 	{0, 0, -1, 0},
@@ -49,7 +49,7 @@ void	t_cam_init(t_cam *c, t_point2d display_res)
 // test ISOMETRIC: look down
 	c->v2 = la_matr_mul(c->v2, la_matr_rotation(
 			(t_vect){1, 0, 0},
-				0.7));
+				-0.7));
 	c->disp = (t_matr){{
 	{.5 * w, 0, 0, .5 * w},
 	{0, .5 * h, 0, .5 * h},
@@ -71,11 +71,12 @@ void	t_cam_draw(t_cam *cam, t_fdf *fdf, t_mesh *mesh)
 	
 	m = mesh->m;
 	// test ISOMETRIC
-	m = la_matr_rotation((t_vect) {0, 1, 0}, radians(45));
+//	m = la_matr_rotation((t_vect) {0, 1, 0}, radians(45));
 	m = la_matr_mul(cam->v1, m);
 	m = la_matr_mul(cam->v2, m);
 	m = la_matr_mul(cam->v3, m);
 	m = la_matr_mul(cam->proj, m);
+
 	i = -1;
 	while (++i < mesh->n_edges)
 	{
