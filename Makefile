@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/12 11:41:21 by slathouw          #+#    #+#              #
-#    Updated: 2021/12/09 08:29:38 by slathouw         ###   ########.fr        #
+#    Updated: 2021/12/10 08:44:10 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ OBJDIR	= obj
 
 #FDF files 
 SOURCES	= fdf.c projections.c screen.c utils.c utils1.c color.c camera.c mesh.c \
-			parser.c tests.c 
+			parser.c tests.c ctrl_hooks.c loop_hook.c 
 SRCDIR 	= srcs
 SRCS 	= ${addprefix $(SRCDIR)/, $(SOURCES)}
 OBJS	= ${addprefix $(OBJDIR)/, $(SOURCES:.c=.o)}
