@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:09:38 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/09 11:34:41 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/10 09:41:32 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	t_cam_init(t_cam *c, t_point2d display_res)
 	{0, 0, 0, 0},
 	{0, 0, 0, 1}}};
 	c->zoom = 0;
-	c->projection_type = PROJ_PERSPECTIVE;
+	c->projection_type = PROJ_ISOMETRIC;
 	t_cam_init_projection(c);
 }
 
@@ -92,30 +92,31 @@ void	t_cam_draw(t_cam *cam, t_fdf *fdf, t_mesh *mesh)
 		p1 = (t_point2d){(int) round(v1.x), (int) round(v1.y)};
 		v2 = la_vect_transform(v2, cam->disp);
 		p2 = (t_point2d){(int) round(v2.x), (int) round(v2.y)};
-		put_line(fdf, p1, p2, 0x0020FF20);
+		put_line(fdf, p1, p2, COLOR_Z_MAX);
+		//ft_printf("Line from {%i, %i} to {%i, %i}\n", p1.x, p1.y, p2.x, p2.y);
 	}
 }
-/*
-void	t_cam_move(t_cam *cam, t_controller *ctrl)
+
+void	t_cam_move(t_cam *cam, t_ctrl *ctrl)
 {
 	int mouse_dx;
 	int mouse_dy;
 
 	if (ctrl->d_yaw)
 	{
-		cam->v1 = t_mat_mul(cam->v1, t_mat_rot(
-				(t_vec){0, 0, 1},
+		cam->v1 = la_matr_mul(cam->v1, la_matr_rotation(
+				(t_vect){0, 0, 1},
 				radians(ctrl->d_yaw)));
 	}
 	if (ctrl->d_pitch)
 	{
-		cam->v2 = t_mat_mul(cam->v2, t_mat_rot(
-				(t_vec){1, 0, 0},
+		cam->v2 = la_matr_mul(cam->v2, la_matr_rotation(
+				(t_vect){1, 0, 0},
 				radians(ctrl->d_pitch)));
 	}
 	if (ctrl->v.x || ctrl->v.z)
 	{
-		t_mat_translate(&cam->v3, ctrl->v);
+		la_matr_translate(&cam->v3, ctrl->v);
 	}
 	if (ctrl->d_zoom)
 	{
@@ -126,12 +127,11 @@ void	t_cam_move(t_cam *cam, t_controller *ctrl)
 	{
 		mouse_dx = ctrl->mouse.click_pos[MOUSE_B_LEFT].x - ctrl->mouse.pos.x;
 		mouse_dy = ctrl->mouse.click_pos[MOUSE_B_LEFT].y - ctrl->mouse.pos.y;
-		cam->v1 = t_mat_mul(cam->v1, t_mat_rot(
-				(t_vec){0, 0, 1},
+		cam->v1 = la_matr_mul(cam->v1, la_matr_rotation(
+				(t_vect){0, 0, 1},
 				radians((double)mouse_dx / 100)));
-		cam->v2 = t_mat_mul(cam->v2, t_mat_rot(
-				(t_vec){1, 0, 0},
+		cam->v2 = la_matr_mul(cam->v2, la_matr_rotation(
+				(t_vect){1, 0, 0},
 				radians((double)mouse_dy / 100)));
 	}
 }
-*/
