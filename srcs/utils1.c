@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:16:20 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/03 13:55:22 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/09 15:08:05 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,19 @@ int	add_color(int trgb, int r_add, int g_add, int b_add)
 	g = get_g(trgb) + g_add;
 	b = get_b(trgb) + b_add;
 	return (create_trgb(t, r, g, b));
+}
+
+int get_z_color(double percent)
+{
+	int r;
+	int g;
+	int b;
+	
+	r = get_r(COLOR_Z_MIN)
+		+ (int) round(percent * (get_r(COLOR_Z_MIN) - get_r(COLOR_Z_MAX)));
+	g = get_g(COLOR_Z_MIN)
+		+ (int) round(percent * (get_g(COLOR_Z_MIN) - get_g(COLOR_Z_MAX)));
+	b = get_b(COLOR_Z_MIN)
+		+ (int) round(percent * (get_b(COLOR_Z_MIN) - get_b(COLOR_Z_MAX)));
+	return (create_trgb(0, r, g, b));
 }
