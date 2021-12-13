@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/12 11:41:21 by slathouw          #+#    #+#              #
-#    Updated: 2021/12/13 14:43:55 by slathouw         ###   ########.fr        #
+#    Updated: 2021/12/13 15:13:34 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ ARROBJS	= ${addprefix $(OBJDIR)/arr_, $(ARRSOURCES:.c=.o)}
 all : 		${NAME}
 
 #FDF linking compilation
-$(NAME) :	$(OBJS) ${LAOBJS} ${ARROBJS}
+$(NAME) : install	$(OBJS) ${LAOBJS} ${ARROBJS}
 	@make -sC $(LIBFT)
 	@cp $(LIBFT)/libftprintf.a .
 	@make -sC mlx
