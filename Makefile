@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/12 11:41:21 by slathouw          #+#    #+#              #
-#    Updated: 2021/12/13 14:14:30 by slathouw         ###   ########.fr        #
+#    Updated: 2021/12/13 14:43:55 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,11 @@ $(NAME) :	$(OBJS) ${LAOBJS} ${ARROBJS}
 
 bonus: ${NAME}
 
+install:
+	@rm -rf mlx
+	@mkdir mlx
+	@tar xzf minilibx_mms_20191025_beta.tar -C mlx --strip-components 1
+	
 #FDF object compilation
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p obj
@@ -82,6 +87,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME) libftprintf.a
+	@rm -rf mlx
 	@make fclean -sC $(LIBFT)
 	@echo "binaries removed..."
 
