@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 13:52:48 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 13:50:19 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 14:13:48 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ static void	add_vertex_and_edge(t_map *map, t_mesh *m, t_vect v)
 
 	x = (int) round(v.x);
 	y = (int) round(v.y);
-	t_mesh_add_vertex(&m, v);
+	t_mesh_add_vertex(m, v);
 	if (x > 0)
-		t_mesh_add_edge(&m,
+		t_mesh_add_edge(m,
 			(t_point2d){y * map->width + x, y * map->width + x - 1});
 	if (y > 0)
-		t_mesh_add_edge(&m,
+		t_mesh_add_edge(m,
 			(t_point2d){y * map->width + x, (y - 1) * map->width + x});
 }
 

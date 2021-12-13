@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 15:54:58 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 12:58:27 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 13:59:28 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	close_hook(t_fdf *fdf)
 {
-//	mlx_destroy_image(fdf->mlx, fdf->f.img);
-//	mlx_destroy_window(fdf->mlx, fdf->mlx_win);
 	ft_int_array_del(&fdf->map.z_arr);
 	ft_array_del(&fdf->mesh.arr_edges);
 	ft_array_del(&fdf->mesh.arr_veritces);
@@ -40,7 +38,6 @@ static void	ft_change_projection(t_fdf *fdf)
 	else
 		fdf->cam.projection_type = PROJ_ISOMETRIC;
 	t_cam_init_projection(&fdf->cam);
-//	print_info(app);
 }
 
 static void	render(t_fdf *fdf)
@@ -53,8 +50,6 @@ static void	render(t_fdf *fdf)
 	scroll_zoom(fdf);
 	t_cam_draw(&fdf->cam, fdf, &fdf->mesh);
 	mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->f.img, 0, 0);
-//	mlx_put_image_to_window(app->M, app->win,
-//		app->framebuffer.image, app->sidebar_w, 0);
 }
 
 int	loop_hook(void *p)

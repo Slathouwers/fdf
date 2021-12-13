@@ -6,18 +6,17 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:01:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 12:06:04 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 14:05:04 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-/*DRAW*/
 void	pixel_put(t_fdf *fdf, int x, int y, int color)
 {
 	char	*dst;
 	t_frame	*data;
-	
+
 	data = &fdf->f;
 	if (x < 0 || y < 0 || x >= fdf->w || y >= fdf->h)
 		return ;
@@ -25,9 +24,9 @@ void	pixel_put(t_fdf *fdf, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-	/*Bresenham's line drawing algorithm*/
 static int
-	set_up_direction(t_point2d *p0, t_point2d *p1, t_point2d *d, int (*error)[2])
+	set_up_direction(t_point2d *p0,
+		t_point2d *p1, t_point2d *d, int (*error)[2])
 {
 	int	b_steep;
 
@@ -50,26 +49,31 @@ static int
 	return (b_steep);
 }
 
-void	put_line(t_fdf *data, t_point2d p0, t_point2d p1, int color)
+static void	put_line_pixel(t_fdf *fdf, t_point2d curr, int color, int b_steep)
 {
-	int		b_steep;
+	if (b_steep)
+		pixel_put(fdf, curr.y, curr.x, color);
+	else
+		pixel_put(fdf, curr.x, curr.y, color);
+}
+
+void
+	put_line(t_fdf *data, t_point2d p0, t_point2d p1, int color)
+{
+	int			b_steep;
 	t_point2d	d;
-	int		error[2];
+	int			error[2];
 	t_point2d	curr;
 
-	if ((p0.x < 0 || p0.y < 0 || p0.x >= data->w || p0.y >= data->h) &&
-		(p1.x < 0 || p1.y < 0 || p1.x >= data->w || p1.y >= data->h))
+	if ((p0.x < 0 || p0.y < 0 || p0.x >= data->w || p0.y >= data->h)
+		&& (p1.x < 0 || p1.y < 0 || p1.x >= data->w || p1.y >= data->h))
 		return ;
-	//ft_printf("Line from {%i, %i} to {%i, %i}\n", p0.x, p0.y, p1.x, p1.y);
 	b_steep = set_up_direction(&p0, &p1, &d, &error);
 	curr.y = p0.y;
 	curr.x = p0.x - 1;
 	while (++curr.x <= p1.x)
 	{
-		if (b_steep)
-			pixel_put(data, curr.y, curr.x, color);
-		else
-			pixel_put(data, curr.x, curr.y, color);
+		put_line_pixel(data, curr, color, b_steep);
 		error[1] += error[0];
 		if (error[1] > d.x)
 		{
@@ -81,5 +85,3 @@ void	put_line(t_fdf *data, t_point2d p0, t_point2d p1, int color)
 		}	
 	}
 }
-	/*----------*/
-/*----------*/

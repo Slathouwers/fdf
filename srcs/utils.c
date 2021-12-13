@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:14:11 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/09 08:24:42 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 13:33:15 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ double	radians(double degrees)
 	return (degrees * M_PI / 180.0);
 }
 
-/*PUT IN LIBFT!!*/
 int	ft_isint(const char *str)
 {
 	int			sign;

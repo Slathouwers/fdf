@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tests.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 08:19:36 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/09 08:24:12 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 13:33:02 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,19 @@ void	print_z_arr(t_map *model)
 {
 	int	x;
 	int	y;
-	
+
 	x = -1;
 	y = -1;
 	while (++y < model->height)
 	{
 		while (++x < model->width)
-			ft_printf("val: %i| ", model->z_data[get_rc_index(x, y, model->width)]);
+			ft_printf("val: %i| ",
+				model->z_data[get_rc_index(x, y, model->width)]);
 		x = -1;
 		ft_printf("\n");
 	}
-	ft_printf("Total = %i | Heigth = %i | Width = %i", get_rc_index(0, y, model->width), model->height, model->width);
+	ft_printf("Total = %i | Heigth = %i | Width = %i",
+		get_rc_index(0, y, model->width), model->height, model->width);
 }
 
 void	put_test_square(t_fdf *fdf)
@@ -49,7 +51,7 @@ void	put_test_square(t_fdf *fdf)
 	put_line(fdf, arr[1], arr[3], 0x002020FF);
 }
 
-t_mesh	t_mesh_cube(int size)
+/* t_mesh	t_mesh_cube(int size)
 {
 	t_mesh	m;
 	int		i;
@@ -79,4 +81,4 @@ t_mesh	t_mesh_cube(int size)
 	while (++i < m.n_vertices)
 		la_vect_scale(&m.vertices[i], size);
 	return (m);
-}
+} */

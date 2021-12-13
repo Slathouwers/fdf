@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:16:20 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/09 15:08:05 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 13:31:55 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ int	add_color(int trgb, int r_add, int g_add, int b_add)
 	return (create_trgb(t, r, g, b));
 }
 
-int get_z_color(double percent)
+int	get_z_color(double percent)
 {
-	int r;
-	int g;
-	int b;
-	
+	int	r;
+	int	g;
+	int	b;
+
 	r = get_r(COLOR_Z_MIN)
 		+ (int) round(percent * (get_r(COLOR_Z_MIN) - get_r(COLOR_Z_MAX)));
 	g = get_g(COLOR_Z_MIN)
