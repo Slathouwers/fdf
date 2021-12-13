@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 13:40:24 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 14:23:15 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define FOV 			120.
 
 # define FRAME_RATE 	60
-# define FRAME_TIME 	1./60
+# define FRAME_TIME 	0.0166666666
 
 # define PROJ_PERSPECTIVE 1
 # define PROJ_ISOMETRIC 0
@@ -47,7 +47,7 @@
 # define MLX_EVENT_KEY_RELEASE 3
 # define MLX_EVENT_KEY_RELEASE_MASK 1L<<1
 # define MLX_EVENT_MOUSE_PRESS 4
-# define MLX_EVENT_MOUSE_PRESS_MASK  1L<<2	
+# define MLX_EVENT_MOUSE_PRESS_MASK  1L<<2
 # define MLX_EVENT_MOUSE_RELEASE 5
 # define MLX_EVENT_MOUSE_RELEASE_MASK 1L<<3
 # define MLX_EVENT_MOUSE_MOVE 6
