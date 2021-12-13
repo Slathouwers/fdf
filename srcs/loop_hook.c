@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 15:54:58 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:48:10 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 15:02:26 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	close_hook(t_fdf *fdf)
 	ft_int_array_del(&fdf->map.z_arr);
 	ft_array_del(&fdf->mesh.arr_edges);
 	ft_array_del(&fdf->mesh.arr_veritces);
-	system("leaks fdf");
 	exit(0);
 }
 
