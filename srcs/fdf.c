@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/10 09:36:04 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 12:49:31 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	frame_clear(t_fdf *fdf)
 	
 	f = &fdf->f;
 	ft_bzero(f->addr,
-		(fdf->h * f->line_length + fdf->w * (f->bits_per_pixel / 8)));
+		((fdf->h - 1) * f->line_length + (fdf->w -1) * (f->bits_per_pixel / 8)));
 }
 
 /*INIT*/
@@ -36,7 +36,7 @@ void	fdf_init(t_fdf *fdf)
 	ft_bzero(fdf, sizeof(t_fdf));
 	fdf->mlx = mlx_init();
 	frame_init(&fdf->f, fdf->mlx, WIDTH, HEIGHT);
-//	ft_printf("bits per pixel: %i | line length: %i | endian: %i |\n", fdf->bits_per_pixel, fdf->line_length, fdf->endian);
+	ft_printf("bits per pixel: %i | line length: %i | endian: %i |\n", fdf->f.bits_per_pixel, fdf->f.line_length, fdf->f.endian);
 	fdf->mlx_win = mlx_new_window(fdf->mlx, WIDTH, HEIGHT, "FDF");
 	fdf->w = WIDTH;
 	fdf->h = HEIGHT;
@@ -64,8 +64,9 @@ int	main(int argc, char **argv)
 		fdf.mesh = t_mesh_from_map(&fdf);
 		fdf.time = clock();
 		fdf.frame_time = clock();
+		pixel_put(&fdf, WIDTH - 1, HEIGHT - 1, COLOR_Z_MAX);
 		mlx_loop_hook(fdf.mlx, loop_hook, &fdf);
-		bind_keys(fdf.mlx_win, &fdf.ctrl, &fdf);
+		bind_keys(fdf.mlx_win, &fdf);
 		mlx_loop(fdf.mlx);
 	}
 }
