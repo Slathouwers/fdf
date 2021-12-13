@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 07:06:59 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/09 08:36:22 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 13:51:34 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	set_z_minmax(t_map *model)
 static int	get_z_val(char *s)
 {
 	int	i;
-	
+
 	if (!ft_isint(s))
 		terminate("Map ERROR: Non integer value found!");
 	i = ft_atoi(s);
@@ -62,7 +62,7 @@ int	parse_map(t_map *model, int fd)
 {
 	char	*line;
 	char	**line_split;
-	
+
 	ft_int_array_init(&model->z_arr);
 	line = get_next_line(fd);
 	while (line)
@@ -76,7 +76,7 @@ int	parse_map(t_map *model, int fd)
 		line = get_next_line(fd);
 		model->height++;
 	}
-	if(!model->z_arr.count)
+	if (!model->z_arr.count)
 		return (0);
 	model->z_data = model->z_arr.data;
 	set_z_minmax(model);
