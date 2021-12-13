@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/10 09:37:51 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 12:47:25 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <math.h>
 # include <time.h>
 
-
 # ifndef M_PI
 #  define M_PI 3.141592653589793115997963468544185161590576171875
 # endif
@@ -35,7 +34,7 @@
 # define FOV 			120.
 
 # define FRAME_RATE 	60
-# define FRAME_TIME 	1./FRAME_RATE
+# define FRAME_TIME 	1./60
 
 # define PROJ_PERSPECTIVE 1
 # define PROJ_ISOMETRIC 0
@@ -45,20 +44,18 @@
 
 # define MLX_EVENT_KEY_PRESS 2
 # define MLX_EVENT_KEY_PRESS_MASK 1L<<0
-
 # define MLX_EVENT_KEY_RELEASE 3
 # define MLX_EVENT_KEY_RELEASE_MASK 1L<<1
-
 # define MLX_EVENT_MOUSE_PRESS 4
-# define MLX_EVENT_MOUSE_PRESS_MASK (1L<<2)	
+# define MLX_EVENT_MOUSE_PRESS_MASK  1L<<2	
 # define MLX_EVENT_MOUSE_RELEASE 5
-# define MLX_EVENT_MOUSE_RELEASE_MASK (1L<<3)
+# define MLX_EVENT_MOUSE_RELEASE_MASK 1L<<3
 # define MLX_EVENT_MOUSE_MOVE 6
-# define MLX_EVENT_MOUSE_MOVE_MASK (1L<<6)
+# define MLX_EVENT_MOUSE_MOVE_MASK 1L<<6
 # define MLX_EVENT_EXPOSE 12
 # define MLX_EVENT_EXIT 17
 
-/* # define KEY_LEFT 123
+# define KEY_LEFT 123
 # define KEY_RIGHT 124
 # define KEY_DOWN 125
 # define KEY_UP 126
@@ -75,26 +72,11 @@
 # define KEY_MINUS 78
 # define KEY_HOME 115
 # define KEY_END 119
- */
-
-# define KEY_LEFT 65361
-# define KEY_RIGHT 65363
-# define KEY_DOWN 65364
-# define KEY_UP 65362
-# define KEY_W 13
-# define KEY_A 0
-# define KEY_S 1
-# define KEY_D 2
-# define KEY_Q 12
-# define KEY_E 14
-# define KEY_ESC 65307
-# define KEY_I 34
-# define KEY_P 35
-# define KEY_PLUS 69
-# define KEY_MINUS 78
-# define KEY_HOME 115
-# define KEY_END 119
-
+# define LIN_KEY_LEFT 65361
+# define LIN_KEY_RIGHT 65363
+# define LIN_KEY_DOWN 65364
+# define LIN_KEY_UP 65362
+# define LIN_KEY_ESC 65307
 # define MOUSE_B_LEFT  1
 # define MOUSE_B_RIGHT  2
 # define MOUSE_B_MIDDLE  3
@@ -185,8 +167,6 @@ typedef struct s_cam
 
 typedef struct s_frame
 {
-	int		w;
-	int		h;
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -250,21 +230,28 @@ int			get_t(int trgb);
 int			get_r(int trgb);
 int			get_g(int trgb);
 int			get_b(int trgb);
-int 		get_z_color(double percent);
+int			get_z_color(double percent);
 
 /*PARSE MAP*/
-int	parse_map(t_map *model, int fd);
+int			parse_map(t_map *model, int fd);
 
 /*CONTROL HOOKS*/
-void	bind_keys(void *win, t_ctrl *c, t_fdf *fdf);
-int		close_hook(t_fdf *fdf);
+void		bind_keys(void *win, t_fdf *fdf);
+int			close_hook(t_fdf *fdf);
+void		ctrl_update_state(t_fdf *fdf);
+int			ctrl_mouse_press(int button, int x, int y, t_fdf *fdf);
+int			ctrl_mouse_release(int button, int x, int y, t_fdf *fdf);
+int			ctrl_mouse_move(int x, int y, t_fdf *fdf);
+int			ctrl_key_press(int keycode, t_fdf *fdf);
+int			ctrl_key_release(int keycode, t_fdf *fdf);
+
 /*FRAMERATE*/
-int		loop_hook(void *p);
+int			loop_hook(void *p);
 /*TESTING UTILS*/
 void		print_z_arr(t_map *model);
 void		put_test_square(t_fdf *fdf);
 t_mesh		t_mesh_cube(int size);
 
-void	frame_clear(t_fdf	*fdf);
+void		frame_clear(t_fdf	*fdf);
 
 #endif
