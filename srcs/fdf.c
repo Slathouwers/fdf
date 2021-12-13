@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:53:43 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 15:11:38 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	main(int argc, char **argv)
 			ft_terminate("Map ERROR: No such file");
 		if (!parse_map(&fdf.map, fd))
 			ft_terminate("Map ERROR: Parsing failed-> z_list empty");
-		print_z_arr(&fdf.map);
 		fdf.mesh = mesh_from_map(&fdf);
 		fdf.time = clock();
 		fdf.frame_time = clock();
