@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 12:47:25 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 13:40:24 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,13 +112,13 @@ typedef struct s_mesh
 }				t_mesh;
 
 //TODO: IMPLEMENT CONTROLER
-typedef struct	s_mouse
+typedef struct s_mouse
 {
-	int 		buttons[8];
-	t_point2d 	pos;
-	t_point2d 	click_pos[8];
-	t_point2d 	release_pos[8];
-} t_mouse;
+	int			buttons[8];
+	t_point2d	pos;
+	t_point2d	click_pos[8];
+	t_point2d	release_pos[8];
+}	t_mouse;
 
 typedef struct s_ctrl
 {
@@ -202,10 +202,10 @@ t_matr		isometric_proj(double fov_width, double fov_height);
 t_matr		perspective_proj(double n, double w, double h, double f);
 
 /*CAMERA*/
-void	t_cam_init_projection(t_cam *c);
-void	t_cam_init(t_cam *c, t_point2d display_res);
-void	t_cam_draw(t_cam *cam, t_fdf *fdf, t_mesh *mesh);
-void	t_cam_move(t_cam *cam, t_ctrl *ctrl);
+void		t_cam_init_projection(t_cam *c);
+void		t_cam_init(t_cam *c, t_point2d display_res);
+void		t_cam_draw(t_cam *cam, t_fdf *fdf, t_mesh *mesh);
+void		t_cam_move(t_cam *cam, t_ctrl *ctrl);
 
 /*SCREEN*/
 void		pixel_put(t_fdf *data, int x, int y, int color);
