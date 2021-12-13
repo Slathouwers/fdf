@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 08:19:36 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 13:33:02 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 14:52:33 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,27 +57,27 @@ void	put_test_square(t_fdf *fdf)
 	int		i;
 
 	i = -1;
-	t_mesh_init(&m);
-	t_mesh_add_vertex(&m, (t_vect){-1, -1, -1});
-	t_mesh_add_vertex(&m, (t_vect){1, -1, -1});
-	t_mesh_add_vertex(&m, (t_vect){1, 1, -1});
-	t_mesh_add_vertex(&m, (t_vect){-1, 1, -1});
-	t_mesh_add_vertex(&m, (t_vect){-1, -1, 1});
-	t_mesh_add_vertex(&m, (t_vect){1, -1, 1});
-	t_mesh_add_vertex(&m, (t_vect){1, 1, 1});
-	t_mesh_add_vertex(&m, (t_vect){-1, 1, 1});
-	t_mesh_add_edge(&m, (t_point2d){0, 1});
-	t_mesh_add_edge(&m, (t_point2d){1, 2});
-	t_mesh_add_edge(&m, (t_point2d){2, 3});
-	t_mesh_add_edge(&m, (t_point2d){3, 0});
-	t_mesh_add_edge(&m, (t_point2d){4, 5});
-	t_mesh_add_edge(&m, (t_point2d){5, 6});
-	t_mesh_add_edge(&m, (t_point2d){6, 7});
-	t_mesh_add_edge(&m, (t_point2d){7, 4});
-	t_mesh_add_edge(&m, (t_point2d){0, 4});
-	t_mesh_add_edge(&m, (t_point2d){1, 5});
-	t_mesh_add_edge(&m, (t_point2d){2, 6});
-	t_mesh_add_edge(&m, (t_point2d){3, 7});
+	mesh_init(&m);
+	add_vertex(&m, (t_vect){-1, -1, -1});
+	add_vertex(&m, (t_vect){1, -1, -1});
+	add_vertex(&m, (t_vect){1, 1, -1});
+	add_vertex(&m, (t_vect){-1, 1, -1});
+	add_vertex(&m, (t_vect){-1, -1, 1});
+	add_vertex(&m, (t_vect){1, -1, 1});
+	add_vertex(&m, (t_vect){1, 1, 1});
+	add_vertex(&m, (t_vect){-1, 1, 1});
+	add_edge(&m, (t_point2d){0, 1});
+	add_edge(&m, (t_point2d){1, 2});
+	add_edge(&m, (t_point2d){2, 3});
+	add_edge(&m, (t_point2d){3, 0});
+	add_edge(&m, (t_point2d){4, 5});
+	add_edge(&m, (t_point2d){5, 6});
+	add_edge(&m, (t_point2d){6, 7});
+	add_edge(&m, (t_point2d){7, 4});
+	add_edge(&m, (t_point2d){0, 4});
+	add_edge(&m, (t_point2d){1, 5});
+	add_edge(&m, (t_point2d){2, 6});
+	add_edge(&m, (t_point2d){3, 7});
 	while (++i < m.n_vertices)
 		la_vect_scale(&m.vertices[i], size);
 	return (m);

@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 15:54:58 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 13:59:28 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 14:48:10 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	ft_change_projection(t_fdf *fdf)
 		fdf->cam.projection_type = PROJ_PERSPECTIVE;
 	else
 		fdf->cam.projection_type = PROJ_ISOMETRIC;
-	t_cam_init_projection(&fdf->cam);
+	init_proj(&fdf->cam);
 }
 
 static void	render(t_fdf *fdf)
@@ -46,9 +46,9 @@ static void	render(t_fdf *fdf)
 	if (fdf->ctrl.status_prj
 		&& fdf->ctrl.status_prj != fdf->ctrl.projection)
 		ft_change_projection(fdf);
-	t_cam_move(&fdf->cam, &fdf->ctrl);
+	update_proj(&fdf->cam, &fdf->ctrl);
 	scroll_zoom(fdf);
-	t_cam_draw(&fdf->cam, fdf, &fdf->mesh);
+	draw_proj(&fdf->cam, fdf, &fdf->mesh);
 	mlx_put_image_to_window(fdf->mlx, fdf->mlx_win, fdf->f.img, 0, 0);
 }
 

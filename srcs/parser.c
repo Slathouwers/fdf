@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 07:06:59 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 13:59:42 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 14:52:33 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	get_z_val(char *s)
 	int	i;
 
 	if (!ft_isint(s))
-		terminate("Map ERROR: Non integer value found!");
+		ft_terminate("Map ERROR: Non integer value found!");
 	i = ft_atoi(s);
 	return (i);
 }
@@ -55,7 +55,7 @@ static void	parse_split(char **split, t_map *model)
 	if (!model->height)
 		model->width = width;
 	else if (model->width != width)
-		terminate("Map ERROR: line length inconsiteny!");
+		ft_terminate("Map ERROR: line length inconsiteny!");
 }
 
 int	parse_map(t_map *model, int fd)
@@ -69,7 +69,7 @@ int	parse_map(t_map *model, int fd)
 	{
 		line_split = ft_split(line, ' ');
 		if (!line_split)
-			terminate("Map ERROR: Memory insufficient!");
+			ft_terminate("Map ERROR: Memory insufficient!");
 		parse_split(line_split, model);
 		ft_free_split(line_split);
 		free(line);

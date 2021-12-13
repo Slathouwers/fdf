@@ -6,13 +6,13 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:14:11 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 13:33:15 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 14:52:33 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-void	terminate(char *err_message)
+void	ft_terminate(char *err_message)
 {
 	if (errno == 0)
 		ft_putendl_fd(err_message, 2);
@@ -26,7 +26,7 @@ int	get_rc_index(int r, int c, int width)
 	return (c * width + r);
 }
 
-double	radians(double degrees)
+double	ft_radians(double degrees)
 {
 	return (degrees * M_PI / 180.0);
 }

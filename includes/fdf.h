@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:23:15 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 14:52:33 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@
 # define COLOR_Z_MIN	0x00008B8B
 
 # define MLX_EVENT_KEY_PRESS 2
-# define MLX_EVENT_KEY_PRESS_MASK 1L<<0
+# define MLX_EVENT_KEY_PRESS_MASK 0
 # define MLX_EVENT_KEY_RELEASE 3
-# define MLX_EVENT_KEY_RELEASE_MASK 1L<<1
+# define MLX_EVENT_KEY_RELEASE_MASK 0
 # define MLX_EVENT_MOUSE_PRESS 4
-# define MLX_EVENT_MOUSE_PRESS_MASK  1L<<2
+# define MLX_EVENT_MOUSE_PRESS_MASK  0
 # define MLX_EVENT_MOUSE_RELEASE 5
-# define MLX_EVENT_MOUSE_RELEASE_MASK 1L<<3
+# define MLX_EVENT_MOUSE_RELEASE_MASK 0
 # define MLX_EVENT_MOUSE_MOVE 6
-# define MLX_EVENT_MOUSE_MOVE_MASK 1L<<6
+# define MLX_EVENT_MOUSE_MOVE_MASK 0
 # define MLX_EVENT_EXPOSE 12
 # define MLX_EVENT_EXIT 17
 
@@ -192,20 +192,20 @@ typedef struct s_fdf
 /*----------*/
 
 /*3D MESH*/
-void		t_mesh_init(t_mesh *m);
-int			t_mesh_add_vertex(t_mesh *m, t_vect v);
-int			t_mesh_add_edge(t_mesh *m, t_point2d e);
-t_mesh		t_mesh_from_map(t_fdf *fdf);
+void		mesh_init(t_mesh *m);
+int			add_vertex(t_mesh *m, t_vect v);
+int			add_edge(t_mesh *m, t_point2d e);
+t_mesh		mesh_from_map(t_fdf *fdf);
 
 /*PROJECTIONS*/
 t_matr		isometric_proj(double fov_width, double fov_height);
 t_matr		perspective_proj(double n, double w, double h, double f);
 
 /*CAMERA*/
-void		t_cam_init_projection(t_cam *c);
-void		t_cam_init(t_cam *c, t_point2d display_res);
-void		t_cam_draw(t_cam *cam, t_fdf *fdf, t_mesh *mesh);
-void		t_cam_move(t_cam *cam, t_ctrl *ctrl);
+void		init_proj(t_cam *c);
+void		init_cam(t_cam *c, t_point2d display_res);
+void		draw_proj(t_cam *cam, t_fdf *fdf, t_mesh *mesh);
+void		update_proj(t_cam *cam, t_ctrl *ctrl);
 
 /*SCREEN*/
 void		pixel_put(t_fdf *data, int x, int y, int color);
@@ -213,9 +213,9 @@ void		put_line(t_fdf *data, t_point2d p0, t_point2d p1, int color);
 
 /*UTILS*/
 	/*TO LIBFT!!*/
-void		terminate(char *err_message);
+void		ft_terminate(char *err_message);
 int			get_rc_index(int r, int c, int width);
-double		radians(double degrees);
+double		ft_radians(double degrees);
 int			ft_isint(const char *str);
 int			ft_abs(int v);
 void		ft_swap(int *a, int *b);
@@ -238,19 +238,19 @@ int			parse_map(t_map *model, int fd);
 /*CONTROL HOOKS*/
 void		bind_keys(void *win, t_fdf *fdf);
 int			close_hook(t_fdf *fdf);
-void		ctrl_update_state(t_fdf *fdf);
-int			ctrl_mouse_press(int button, int x, int y, t_fdf *fdf);
-int			ctrl_mouse_release(int button, int x, int y, t_fdf *fdf);
-int			ctrl_mouse_move(int x, int y, t_fdf *fdf);
-int			ctrl_key_press(int keycode, t_fdf *fdf);
-int			ctrl_key_release(int keycode, t_fdf *fdf);
+void		update_state(t_fdf *fdf);
+int			mouse_press(int button, int x, int y, t_fdf *fdf);
+int			mouse_release(int button, int x, int y, t_fdf *fdf);
+int			mouse_move(int x, int y, t_fdf *fdf);
+int			key_press(int keycode, t_fdf *fdf);
+int			key_release(int keycode, t_fdf *fdf);
 
 /*FRAMERATE*/
 int			loop_hook(void *p);
 /*TESTING UTILS*/
 void		print_z_arr(t_map *model);
 void		put_test_square(t_fdf *fdf);
-t_mesh		t_mesh_cube(int size);
+/* t_mesh		t_mesh_cube(int size); */
 
 void		frame_clear(t_fdf	*fdf);
 

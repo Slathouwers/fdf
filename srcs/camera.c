@@ -6,20 +6,20 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:09:38 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:13:27 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 14:52:33 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-void	t_cam_init_projection(t_cam *c)
+void	init_proj(t_cam *c)
 {
 	double	far;
 	double	near;
 	double	ze;
 
 	ze = exp(c->zoom / 100);
-	far = sin(radians(FOV / 2)) / cos(radians(FOV / 2)) * ze;
+	far = sin(ft_radians(FOV / 2)) / cos(ft_radians(FOV / 2)) * ze;
 	near = 10.;
 	if (c->projection_type == PROJ_PERSPECTIVE)
 		c->proj = perspective_proj(near, far * near,
@@ -30,7 +30,7 @@ void	t_cam_init_projection(t_cam *c)
 				(double)HEIGHT * ze * .6);
 }
 
-void	t_cam_init(t_cam *c, t_point2d display_res)
+void	init_cam(t_cam *c, t_point2d display_res)
 {
 	int	w;
 	int	h;
@@ -55,7 +55,7 @@ void	t_cam_init(t_cam *c, t_point2d display_res)
 	{0, 0, 0, 1}}};
 	c->zoom = 0;
 	c->projection_type = PROJ_PERSPECTIVE;
-	t_cam_init_projection(c);
+	init_proj(c);
 }
 
 static void	project_edge(t_fdf *fdf, t_matr m, t_vect v1, t_vect v2)
@@ -78,7 +78,7 @@ static void	project_edge(t_fdf *fdf, t_matr m, t_vect v1, t_vect v2)
 	put_line(fdf, p1, p2, COLOR_Z_MAX);
 }
 
-void	t_cam_draw(t_cam *cam, t_fdf *fdf, t_mesh *mesh)
+void	draw_proj(t_cam *cam, t_fdf *fdf, t_mesh *mesh)
 {
 	int			i;
 	t_vect		v1;
@@ -99,7 +99,7 @@ void	t_cam_draw(t_cam *cam, t_fdf *fdf, t_mesh *mesh)
 	}
 }
 
-void	t_cam_move(t_cam *cam, t_ctrl *ctrl)
+void	update_proj(t_cam *cam, t_ctrl *ctrl)
 {
 	int	mouse_dx;
 	int	mouse_dy;
@@ -107,17 +107,17 @@ void	t_cam_move(t_cam *cam, t_ctrl *ctrl)
 	if (ctrl->d_yaw)
 		cam->v1 = la_matr_mul(cam->v1, la_matr_rotation(
 					(t_vect){0, 0, 1},
-					radians(ctrl->d_yaw)));
+					ft_radians(ctrl->d_yaw)));
 	if (ctrl->d_pitch)
 		cam->v2 = la_matr_mul(cam->v2, la_matr_rotation(
 					(t_vect){1, 0, 0},
-					radians(ctrl->d_pitch)));
+					ft_radians(ctrl->d_pitch)));
 	if (ctrl->v.x || ctrl->v.z)
 		la_matr_translate(&cam->v3, ctrl->v);
 	if (ctrl->d_zoom)
 	{
 		cam->zoom += ctrl->d_zoom;
-		t_cam_init_projection(cam);
+		init_proj(cam);
 	}
 	if (ctrl->mouse.buttons[MOUSE_B_LEFT])
 	{
@@ -125,9 +125,9 @@ void	t_cam_move(t_cam *cam, t_ctrl *ctrl)
 		mouse_dy = ctrl->mouse.click_pos[MOUSE_B_LEFT].y - ctrl->mouse.pos.y;
 		cam->v1 = la_matr_mul(cam->v1, la_matr_rotation(
 					(t_vect){0, 0, 1},
-					radians((double)mouse_dx / 100)));
+					ft_radians((double)mouse_dx / 100)));
 		cam->v2 = la_matr_mul(cam->v2, la_matr_rotation(
 					(t_vect){1, 0, 0},
-					radians((double)mouse_dy / 100)));
+					ft_radians((double)mouse_dy / 100)));
 	}
 }
