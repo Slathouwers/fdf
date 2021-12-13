@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   screen.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:01:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/10 09:32:27 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 12:06:04 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	pixel_put(t_fdf *fdf, int x, int y, int color)
 {
 	char	*dst;
-	t_frame *data;
+	t_frame	*data;
 	
 	data = &fdf->f;
 	if (x < 0 || y < 0 || x >= fdf->w || y >= fdf->h)
