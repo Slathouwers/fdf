@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+         #
+#    By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/02 11:59:30 by slathouw          #+#    #+#              #
-#    Updated: 2021/11/11 14:07:16 by slathouw         ###   ########.fr        #
+#    Updated: 2021/12/13 11:48:04 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS 		= ft_isalnum.c ft_isprint.c ft_strlen.c ft_tolower.c ft_atoi.c 	\
 			ft_ultobase_len.c ft_strldup.c ft_max.c ft_strcmp.c
 OBJS		= ${SRCS:.c=.o}
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 
 .c.o:
 			@${CC} ${CFLAGS} -I . -c $< -o ${<:.c=.o}
