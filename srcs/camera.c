@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:09:38 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:52:33 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 14:59:20 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,10 @@ void	update_proj(t_cam *cam, t_ctrl *ctrl)
 	int	mouse_dy;
 
 	if (ctrl->d_yaw)
-		cam->v1 = la_matr_mul(cam->v1, la_matr_rotation(
-					(t_vect){0, 0, 1},
+		cam->v1 = la_matr_mul(cam->v1, la_matr_rotation((t_vect){0, 0, 1},
 					ft_radians(ctrl->d_yaw)));
 	if (ctrl->d_pitch)
-		cam->v2 = la_matr_mul(cam->v2, la_matr_rotation(
-					(t_vect){1, 0, 0},
+		cam->v2 = la_matr_mul(cam->v2, la_matr_rotation((t_vect){1, 0, 0},
 					ft_radians(ctrl->d_pitch)));
 	if (ctrl->v.x || ctrl->v.z)
 		la_matr_translate(&cam->v3, ctrl->v);
@@ -123,11 +121,9 @@ void	update_proj(t_cam *cam, t_ctrl *ctrl)
 	{
 		mouse_dx = ctrl->mouse.click_pos[MOUSE_B_LEFT].x - ctrl->mouse.pos.x;
 		mouse_dy = ctrl->mouse.click_pos[MOUSE_B_LEFT].y - ctrl->mouse.pos.y;
-		cam->v1 = la_matr_mul(cam->v1, la_matr_rotation(
-					(t_vect){0, 0, 1},
+		cam->v1 = la_matr_mul(cam->v1, la_matr_rotation((t_vect){0, 0, 1},
 					ft_radians((double)mouse_dx / 100)));
-		cam->v2 = la_matr_mul(cam->v2, la_matr_rotation(
-					(t_vect){1, 0, 0},
+		cam->v2 = la_matr_mul(cam->v2, la_matr_rotation((t_vect){1, 0, 0},
 					ft_radians((double)mouse_dy / 100)));
 	}
 }
