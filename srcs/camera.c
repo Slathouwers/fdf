@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slathouw <slathouw@student.s19.be>         +#+  +:+       +#+        */
+/*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:09:38 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/10 09:41:32 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/13 12:06:18 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	t_cam_init(t_cam *c, t_point2d display_res)
 	{0, 0, 0, 0},
 	{0, 0, 0, 1}}};
 	c->zoom = 0;
-	c->projection_type = PROJ_ISOMETRIC;
+	c->projection_type = PROJ_PERSPECTIVE;
 	t_cam_init_projection(c);
 }
 
@@ -93,7 +93,7 @@ void	t_cam_draw(t_cam *cam, t_fdf *fdf, t_mesh *mesh)
 		v2 = la_vect_transform(v2, cam->disp);
 		p2 = (t_point2d){(int) round(v2.x), (int) round(v2.y)};
 		put_line(fdf, p1, p2, COLOR_Z_MAX);
-		//ft_printf("Line from {%i, %i} to {%i, %i}\n", p1.x, p1.y, p2.x, p2.y);
+//		ft_printf("Line from {%i, %i} to {%i, %i}\n", p1.x, p1.y, p2.x, p2.y);
 	}
 }
 
