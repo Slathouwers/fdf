@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 15:40:09 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:52:33 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/14 14:45:14 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	key_press(int keycode, t_fdf *fdf)
 	c = &fdf->ctrl;
 	if (keycode == KEY_ESC)
 		close_hook(fdf);
-	c->keyboard[keycode] = 1;
+	if (keycode < 128)
+		c->keyboard[keycode] = 1;
 	update_state(fdf);
 	return (0);
 }
@@ -58,7 +59,8 @@ int	key_release(int keycode, t_fdf *fdf)
 	t_ctrl	*c;
 
 	c = &fdf->ctrl;
-	c->keyboard[keycode] = 0;
+	if (keycode < 128)
+		c->keyboard[keycode] = 0;
 	update_state(fdf);
 	return (0);
 }
