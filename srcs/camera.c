@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:09:38 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:59:20 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/14 15:06:06 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ void	init_proj(t_cam *c)
 	double	ze;
 
 	ze = exp(c->zoom / 100);
-	far = sin(ft_radians(FOV / 2)) / cos(ft_radians(FOV / 2)) * ze;
+	far = sin(ft_radians(FOV / 2)) / cos(ft_radians(FOV / 2)) * ze * 2;
 	near = 10.;
 	if (c->projection_type == PROJ_PERSPECTIVE)
 		c->proj = perspective_proj(near, far * near,
 				far * near * HEIGHT / WIDTH,
 				9999.);
 	else
-		c->proj = isometric_proj((double)WIDTH * ze * .6,
-				(double)HEIGHT * ze * .6);
+		c->proj = isometric_proj((double)WIDTH * ze * 1,
+				(double)HEIGHT * ze * 1);
 }
 
 void	init_cam(t_cam *c, t_point2d display_res)
@@ -38,7 +38,7 @@ void	init_cam(t_cam *c, t_point2d display_res)
 	w = display_res.x;
 	h = display_res.y;
 	la_matr_reset(&c->v3);
-	la_matr_translate(&c->v3, (t_vect){0, 0, -600});
+	la_matr_translate(&c->v3, (t_vect){0, 0, -400});
 	c->v1 = (t_matr){{
 	{1, 0, 0, 0},
 	{0, 0, -1, 0},
@@ -47,7 +47,7 @@ void	init_cam(t_cam *c, t_point2d display_res)
 	la_matr_reset(&c->v2);
 	c->v2 = la_matr_mul(c->v2, la_matr_rotation(
 				(t_vect){1, 0, 0},
-				-0.7));
+				-0.4));
 	c->disp = (t_matr){{
 	{.5 * w, 0, 0, .5 * w},
 	{0, .5 * h, 0, .5 * h},
@@ -66,10 +66,10 @@ static void	project_edge(t_fdf *fdf, t_matr m, t_vect v1, t_vect v2)
 
 	cam = &fdf->cam;
 	v1 = la_vect_transform_div_w(v1, m);
-	if (v1.z < -1. || v1.z > 1.)
+	if (v1.z < -1 || v1.z > 1)
 		return ;
 	v2 = la_vect_transform_div_w(v2, m);
-	if (v2.z < -1. || v2.z > 1.)
+	if (v2.z < -1 || v2.z > 1)
 		return ;
 	v1 = la_vect_transform(v1, cam->disp);
 	p1 = (t_point2d){(int) round(v1.x), (int) round(v1.y)};
