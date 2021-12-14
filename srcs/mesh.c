@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 13:52:48 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:52:33 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/14 14:52:44 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	center_and_rotate_mesh(t_mesh *m, t_vect size)
 		m->vertices[i].y /= size.x - 1;
 		m->vertices[i].x *= 500;
 		m->vertices[i].y *= 500;
-		m->vertices[i].z *= 10;
+		m->vertices[i].z *= 2;
 	}
 	rotation = la_matr_rotation((t_vect){0, 0, 1}, ft_radians(45));
 	i = -1;
