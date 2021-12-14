@@ -6,12 +6,13 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 12:21:27 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:52:33 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/14 14:11:18 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
+//TODO: add c->x_movement and c->y_movement camera translation
 void	update_state(t_fdf *fdf)
 {
 	t_ctrl	*c;
