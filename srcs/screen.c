@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:01:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/15 11:58:37 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/15 14:35:38 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 void	pixel_put(t_fdf *fdf, int x, int y, int color)
 {
-	char	*dst;
-	t_frame	*data;
+	unsigned int	*dst;
 
-	data = &fdf->f;
+	dst = (unsigned int *) fdf->f.addr;
 	if (x < 0 || y < 0 || x >= fdf->w || y >= fdf->h)
 		return ;
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	dst[y * fdf->w + x] = color;
 }
 
 static int
