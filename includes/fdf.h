@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:42:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:52:33 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/15 13:34:06 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,16 @@
 #  define M_PI 3.141592653589793115997963468544185161590576171875
 # endif
 
-# define HEIGHT			1080
-# define WIDTH			1920
+//# define HEIGHT			1080
+//# define WIDTH			1920
+#define HEIGHT	800
+#define WIDTH	1024
+
 # define MENU_WIDTH		250
-# define FOV 			120.
+# define FOV 			140.
 
 # define FRAME_RATE 	60
-# define FRAME_TIME 	0.0166666666
+# define FRAME_TIME 	0.01766666666666
 
 # define PROJ_PERSPECTIVE 1
 # define PROJ_ISOMETRIC 0

@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:01:04 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 14:05:04 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/15 11:58:37 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void
 	int			error[2];
 	t_point2d	curr;
 
-	if ((p0.x < 0 || p0.y < 0 || p0.x >= data->w || p0.y >= data->h)
+ 	if ((p0.x < 0 || p0.y < 0 || p0.x >= data->w || p0.y >= data->h)
 		&& (p1.x < 0 || p1.y < 0 || p1.x >= data->w || p1.y >= data->h))
 		return ;
 	b_steep = set_up_direction(&p0, &p1, &d, &error);

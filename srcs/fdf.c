@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/13 15:11:38 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/15 12:44:23 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	main(int argc, char **argv)
 		fdf.mesh = mesh_from_map(&fdf);
 		fdf.time = clock();
 		fdf.frame_time = clock();
-		pixel_put(&fdf, WIDTH - 1, HEIGHT - 1, COLOR_Z_MAX);
 		mlx_loop_hook(fdf.mlx, loop_hook, &fdf);
 		bind_keys(fdf.mlx_win, &fdf);
 		mlx_loop(fdf.mlx);

@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/20 09:55:38 by slathouw          #+#    #+#              #
-#    Updated: 2021/12/13 12:59:41 by slathouw         ###   ########.fr        #
+#    Updated: 2021/12/15 13:36:07 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME 	= libftprintf.a
 LIBFT 	= libft
 INCLUDES= includes
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror -o3
 OBJDIR	= obj
 
 

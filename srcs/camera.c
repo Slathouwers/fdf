@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 09:09:38 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/14 15:06:06 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/15 12:56:05 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	init_proj(t_cam *c)
 	double	ze;
 
 	ze = exp(c->zoom / 100);
-	far = sin(ft_radians(FOV / 2)) / cos(ft_radians(FOV / 2)) * ze * 2;
-	near = 10.;
+	far = cos(ft_radians(FOV / 2)) / sin(ft_radians(FOV / 2)) * ze * 2;
+	near = 100.;
 	if (c->projection_type == PROJ_PERSPECTIVE)
 		c->proj = perspective_proj(near, far * near,
 				far * near * HEIGHT / WIDTH,
@@ -38,7 +38,7 @@ void	init_cam(t_cam *c, t_point2d display_res)
 	w = display_res.x;
 	h = display_res.y;
 	la_matr_reset(&c->v3);
-	la_matr_translate(&c->v3, (t_vect){0, 0, -400});
+	la_matr_translate(&c->v3, (t_vect){0, 0, -800});
 	c->v1 = (t_matr){{
 	{1, 0, 0, 0},
 	{0, 0, -1, 0},
@@ -54,11 +54,11 @@ void	init_cam(t_cam *c, t_point2d display_res)
 	{0, 0, 0, 0},
 	{0, 0, 0, 1}}};
 	c->zoom = 0;
-	c->projection_type = PROJ_PERSPECTIVE;
+	c->projection_type = PROJ_ISOMETRIC;
 	init_proj(c);
 }
 
-static void	project_edge(t_fdf *fdf, t_matr m, t_vect v1, t_vect v2)
+static int	project_edge(t_fdf *fdf, t_matr m, t_vect v1, t_vect v2)
 {
 	t_point2d	p1;
 	t_point2d	p2;
@@ -66,16 +66,17 @@ static void	project_edge(t_fdf *fdf, t_matr m, t_vect v1, t_vect v2)
 
 	cam = &fdf->cam;
 	v1 = la_vect_transform_div_w(v1, m);
-	if (v1.z < -1 || v1.z > 1)
-		return ;
+	if (v1.z < -1. || v1.z > 1.)
+		return (0);
 	v2 = la_vect_transform_div_w(v2, m);
-	if (v2.z < -1 || v2.z > 1)
-		return ;
+	if (v2.z < -1. || v2.z > 1.)
+		return (0);
 	v1 = la_vect_transform(v1, cam->disp);
 	p1 = (t_point2d){(int) round(v1.x), (int) round(v1.y)};
 	v2 = la_vect_transform(v2, cam->disp);
 	p2 = (t_point2d){(int) round(v2.x), (int) round(v2.y)};
 	put_line(fdf, p1, p2, COLOR_Z_MAX);
+	return (1);
 }
 
 void	draw_proj(t_cam *cam, t_fdf *fdf, t_mesh *mesh)
@@ -84,6 +85,7 @@ void	draw_proj(t_cam *cam, t_fdf *fdf, t_mesh *mesh)
 	t_vect		v1;
 	t_vect		v2;
 	t_matr		m;
+	int			edge_count;
 
 	m = mesh->m;
 	m = la_matr_mul(cam->v1, m);
@@ -91,11 +93,12 @@ void	draw_proj(t_cam *cam, t_fdf *fdf, t_mesh *mesh)
 	m = la_matr_mul(cam->v3, m);
 	m = la_matr_mul(cam->proj, m);
 	i = -1;
+	edge_count = 0;
 	while (++i < mesh->n_edges)
 	{
 		v1 = mesh->vertices[mesh->edges[i].x];
 		v2 = mesh->vertices[mesh->edges[i].y];
-		project_edge(fdf, m, v1, v2);
+		edge_count += project_edge(fdf, m, v1, v2);
 	}
 }
 

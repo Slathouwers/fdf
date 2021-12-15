@@ -6,7 +6,7 @@
 #    By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/12 11:41:21 by slathouw          #+#    #+#              #
-#    Updated: 2021/12/13 15:13:34 by slathouw         ###   ########.fr        #
+#    Updated: 2021/12/15 13:31:53 by slathouw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME 	= fdf
 INCLUDES= includes
 LIBFT 	= libs/libftprintf
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror -g -o3
 MLXFLAG = -Lmlx -lmlx -lm -framework OpenGL -framework AppKit
 OBJDIR	= obj
 
