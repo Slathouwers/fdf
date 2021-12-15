@@ -6,7 +6,7 @@
 /*   By: slathouw <slathouw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 11:40:31 by slathouw          #+#    #+#             */
-/*   Updated: 2021/12/15 12:44:23 by slathouw         ###   ########.fr       */
+/*   Updated: 2021/12/15 15:18:28 by slathouw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,24 @@ void	frame_init(t_frame *f, void *mlx, int w, int h)
 			&f->endian);
 }
 
-void	frame_clear(t_fdf *fdf)
-{
-	t_frame	*f;
-
-	f = &fdf->f;
+/* 	TOO SLOW:
 	ft_bzero(f->addr,
 		((fdf->h - 1) * f->line_length
 			+ (fdf->w -1) * (f->bits_per_pixel / 8)));
+ */
+void	frame_clear(t_fdf *fdf)
+{
+	unsigned int	*dst;
+	int				i;
+	int				max;
+
+	dst = (unsigned int *) fdf->f.addr;
+	i = -1;
+	max = (fdf->h * fdf->w);
+	while (++i < max)
+	{
+		dst[i] = 0;
+	}
 }
 
 void	fdf_init(t_fdf *fdf)
